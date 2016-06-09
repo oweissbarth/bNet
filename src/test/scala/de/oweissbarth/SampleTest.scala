@@ -1,51 +1,69 @@
 package de.oweissbarth
 
-
-import org.junit._
-import Assert._
 import de.oweissbarth.sample._
+import org.apache.spark.sql.SQLContext
+import org.apache.spark.{SparkConf, SparkContext}
 
-@Test
-class SampleTest {
-  @Test
-  def testCSVSampleProvider()={
-    val prov = new CSVSampleProvider("src/test/resources/xy_data.csv", "\t")
-    assertNotNull(prov)
-    assertNotNull(prov.getSample())
+import org.scalatest._
+
+class SampleTest extends FlatSpec with BeforeAndAfterAll with MustMatchers{
+
+
+  override def beforeAll() = {
+    val sparkConf = new SparkConf()
+
+    val sc = new SparkContext("local", "Baysian", sparkConf)
+
+    val sqlc = new SQLContext(sc)
+
   }
-  
-  @Test
-  def testFields() ={
+
+  override def afterAll() = {
+    val sc = SparkContext.getOrCreate()
+    sc.stop()
+  }
+
+  "An IntervalField" should "construct without Exceptions and be non null" in{
     val interval = new IntervalField(2.4f)
-    assertNotNull(interval)
-  }
-  
-  @Test
-  def testSets() ={
-    val interval1 = new IntervalField(2.4f)
-    val interval2 = new IntervalField(7.6f)
-    val interval3 = new IntervalField(6.9f)
-    val interval4 = new IntervalField(5.7f)
-    
-    val list = List(interval1, interval2, interval3, interval4)
-    
-    val set = new IntervalDataSet(list, "testing")
-    
-    assertNotNull(set)
-
+    assert(interval != null)
   }
 
-  @Test
-  def testMultiTypeCSV() = {
+  "An CategoricalField" should "construct without Exceptions and be non null" in{
+    val categorySet = new CategorySet()
+    val categorical = new CategoricalField(categorySet.get("Male"))
+    assert(categorical != null)
+  }
+
+ "A CSVSampleProvider" should "be non null after creation" in {
+   val sc = SparkContext.getOrCreate()
+   implicit val sqlc = SQLContext.getOrCreate(SparkContext.getOrCreate())
+
+   val prov = new CSVSampleProvider("src/test/resources/xy_data.csv", "\t")
+   assert(prov != null)
+ }
+
+  it should " return a non null sample when getSample is called if constructed with valid path" in {
+    val sc = SparkContext.getOrCreate()
+    implicit val sqlc = SQLContext.getOrCreate(SparkContext.getOrCreate())
+
+    val prov = new CSVSampleProvider("src/test/resources/xy_data.csv", "\t")
+    assert(prov.getSample() != null)
+  }
+
+
+  it should " infer schema correctly" in{
+    val sc = SparkContext.getOrCreate()
+    implicit val sqlc = SQLContext.getOrCreate(sc)
+
     val prov = new CSVSampleProvider("src/test/resources/genderAgeIncome.csv", ",")
 
-    val sets = prov.getSample().dataSets
+    val recordFields = prov.getSample().records.first()
 
-    assertTrue(sets(0).isInstanceOf[CategoricalDataSet])
-    assertTrue(sets(1).isInstanceOf[IntervalDataSet])
-    assertTrue(sets(2).isInstanceOf[IntervalDataSet])
-
+    assert(recordFields(0).isInstanceOf[String])
+    assert(recordFields(1).isInstanceOf[Integer])
+    assert(recordFields(2).isInstanceOf[Integer])
   }
+
 
 
 

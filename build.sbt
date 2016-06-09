@@ -8,13 +8,18 @@ libraryDependencies ~= { _.map(_.exclude("org.slf4j", "slf4j-jdk14")) }
 
 
 /*JUnit*/
-libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
+//libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
+libraryDependencies += "org.scalactic" %% "scalactic" % "2.2.6"
+libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6" % "test"
+
 
 /*XML */
 libraryDependencies += "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.2"
 
 /*Spark*/
 libraryDependencies += "org.apache.spark" %% "spark-core" % "1.6.1"
+libraryDependencies += "org.apache.spark" %% "spark-sql" % "1.6.1"
+libraryDependencies += "com.databricks" %% "spark-csv" % "1.4.0"
 
 
 /*Logging*/
@@ -26,5 +31,8 @@ javaOptions in run ++= Seq(
   "-Dlog4j.debug=true",
   "-Dlog4j.configuration=log4j.properties")
 outputStrategy := Some(StdoutOutput)
+
+parallelExecution in test := false
+
 
     

@@ -1,8 +1,6 @@
 package de.oweissbarth
 
-import org.junit._
-import Assert._
-
+/*
 import de.oweissbarth.core.BayesianNetwork
 import de.oweissbarth.model.LinearModelProvider
 import de.oweissbarth.graph.GraphMLGraphProvider
@@ -30,6 +28,8 @@ class BayesianNetworkTest {
     assertEquals(lnMP, bn.getModelType("x"))
     
     bn.fit()
+
+    bn.close()
     
   }
 
@@ -51,5 +51,7 @@ class BayesianNetworkTest {
 
     bn.fit()
 
+    bn.close()
+
   }
-}
+}*/
