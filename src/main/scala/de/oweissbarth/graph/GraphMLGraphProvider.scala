@@ -8,7 +8,7 @@ class GraphMLGraphProvider(filepath: String) extends GraphProvider{
 
   
   
-	def getGraph()(implicit sqlc: SQLContext ): DirectedAcyclicGraph = {
+	def getGraph(): DirectedAcyclicGraph = {
     val graph = new DirectedAcyclicGraph()
 
     val xml = XML.loadFile(filepath)

@@ -49,21 +49,12 @@ class BayesianNetwork(private val graphProvider: GraphProvider, private val samp
     graph.nodes(label).modelProvider.get
   }
 
-  def getColumnType(label: String): Int = {
-    /*val set = graph.nodes(label).dataSet
-    if(set.isEmpty){
-      BayesianNetwork.NONE
-    }else if(set.get.isInstanceOf[CategoricalDataSet]){
-      BayesianNetwork.CATEGORICAL
-    }else{
-      BayesianNetwork.INTERVAL
-    }*/
-    //TODO
-    return BayesianNetwork.CATEGORICAL;
+  def setNodeType(label: String, nodeType: Int)= {
+    graph.nodes(label).nodeType = nodeType
   }
 
-  def setNodeType(label: String, nodeType: Int){
-    graph.nodes(label).nodeType = nodeType
+  def getNodeType(label: String) = {
+    graph.nodes(label).nodeType
   }
 
   def close() = {

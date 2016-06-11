@@ -1,6 +1,9 @@
 package de.oweissbarth.model
 
-abstract class ModelProvider {
-  def getModel(): Model
+import org.apache.spark.sql.DataFrame
+
+
+abstract class ModelProvider() {
+  def getModel(d: DataFrame): Model
 
 }

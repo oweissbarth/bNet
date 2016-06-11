@@ -1,16 +1,16 @@
 package de.oweissbarth.graph
 
+import de.oweissbarth.core.BayesianNetwork
 import de.oweissbarth.model._
 import de.oweissbarth.sample._
 
-class Node(val label: String, var parents: List[Node], var modelProvider: Option[ModelProvider], var dataSet: Option[Record]){
+class Node(val label: String, var parents: List[Node], var dataSet: Option[Record]){
 	var dirty = true
+  var model :Option= None
+  var modelProvider : Option = None
 
+	var nodeType = BayesianNetwork.NONE
 
-	//private val categoricalParents : List[Node] = parents.filter(e => (e.dataSet != None && e.dataSet.get.isInstanceOf[CategoricalDataSet]))
-	//private val categoryCombinations = categoricalParents.map(p=>p.dataSet.asInstanceOf[CategoricalDataSet].categories.size).foldLeft(1)((a,b)=>a*b)// NOTE use pattern matching here?
-
-	//val models = new Array[Model](categoryCombinations)
 
 	def this(label:String) = {
 		this(label, List(), None , None)
@@ -22,11 +22,7 @@ class Node(val label: String, var parents: List[Node], var modelProvider: Option
 
 
 	def fit()= {
-		/*if(dirty){
-			for(i <- 0 until models.length){
-				models(i) = computeModel(i)
-			}
-		}*/
+
 	}
 
 	private def computeModel(combination: Int): Model = {
