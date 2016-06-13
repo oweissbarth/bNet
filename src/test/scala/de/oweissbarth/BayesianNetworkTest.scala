@@ -2,7 +2,7 @@ package de.oweissbarth
 
 
 import de.oweissbarth.core.BayesianNetwork
-import de.oweissbarth.model.LinearModelProvider
+import de.oweissbarth.model.SimpleLinearModelProvider
 import de.oweissbarth.graph.GraphMLGraphProvider
 import de.oweissbarth.sample.CSVSampleProvider
 
@@ -38,7 +38,7 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
     assert(bn != null)
 
 
-    val lnMP = new LinearModelProvider()
+    val lnMP = new SimpleLinearModelProvider()
 
     bn.setModelType("x", lnMP)
 

@@ -19,6 +19,7 @@ libraryDependencies += "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.2"
 /*Spark*/
 libraryDependencies += "org.apache.spark" %% "spark-core" % "1.6.1"
 libraryDependencies += "org.apache.spark" %% "spark-sql" % "1.6.1"
+libraryDependencies += "org.apache.spark" %% "spark-mllib" % "1.6.1"
 libraryDependencies += "com.databricks" %% "spark-csv" % "1.4.0"
 
 

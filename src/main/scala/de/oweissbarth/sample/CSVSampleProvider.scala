@@ -2,6 +2,9 @@ package de.oweissbarth.sample
 
 import org.apache.spark.sql.{Row, SQLContext}
 import de.oweissbarth.util.BayesianEncoders._
+import org.apache.spark.SparkContext
+
+import scala.util.Try
 
 
 class CSVSampleProvider(filepath :String, delimiter: String ) extends SampleProvider{
@@ -9,14 +12,19 @@ class CSVSampleProvider(filepath :String, delimiter: String ) extends SampleProv
 
 
 	def getSample()(implicit sqlc: SQLContext ): Sample = {
-
+    val sc = SparkContext.getOrCreate()
 
     val file = sqlc.read.format("com.databricks.spark.csv").option("header", "true").option("delimiter", delimiter).option("inferSchema", "true").load(filepath)
 
+    //val file = sc.textFile(filepath).map(line =>line.split(delimiter)).map(line => constructRecord(line))
 
     new Sample(file)
 
 	}
+
+  private def constructRecord(line: Array[String]): Record ={
+    new Record(line.map(i=> if(Try(i.toFloat).isSuccess)new IntervalField(i.toFloat)else new CategoricalField(new Category(i))))
+  }
 
   /*private def constructDataSetInferType(label : String, col : List[String]): Record ={
     val setType = if(col.map((e)=>Try(e.toFloat).isFailure).reduce((a, b)=>a||b))  classOf[CategoricalDataSet] else classOf[IntervalDataSet] //TODO check performance of this. We are parsing to Float twice
