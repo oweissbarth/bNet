@@ -2,10 +2,9 @@ package de.oweissbarth
 
 
 import de.oweissbarth.core.BayesianNetwork
-import de.oweissbarth.model.SimpleLinearModelProvider
+import de.oweissbarth.model.{GaussianBaseModelProvider, SimpleLinearModelProvider}
 import de.oweissbarth.graph.GraphMLGraphProvider
 import de.oweissbarth.sample.CSVSampleProvider
-
 import org.scalatest._
 
 
@@ -64,6 +63,24 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
     bn.getNodeType("Age") should be (BayesianNetwork.INTERVAL)
     bn.getNodeType("Gender") should be (BayesianNetwork.CATEGORICAL)
     bn.getNodeType("Income") should be (BayesianNetwork.INTERVAL)
+
+    bn.close()
+  }
+
+  it should "run fit without errors " in {
+    val gp = new GraphMLGraphProvider("src/test/resources/xy_graph.gml")
+    assert(gp != null)
+    val sp = new CSVSampleProvider("src/test/resources/xy_data.csv", "\t")
+    assert(sp != null)
+
+    val bn = new BayesianNetwork(gp, sp)
+
+    assert(bn != null)
+
+    bn.setModelType("x", new GaussianBaseModelProvider())
+    bn.setModelType("y", new SimpleLinearModelProvider())
+
+    bn.fit()
 
     bn.close()
   }

@@ -9,7 +9,7 @@ import org.apache.spark.sql.functions.{avg, variance}
 class GaussianBaseModelProvider extends IntervalModelProvider{
   override def getModel(d: DataFrame, parents: Array[Node]): GaussianBaseModel ={
     val mean = d.select(avg(d.columns(0))).first().getDouble(0)
-    val variance = d.select(variance(d.columns(0))).first().getDouble(0)
-    new GaussianBaseModel(mean, variance)
+    val vari = d.select(variance(d.columns(0))).first().getDouble(0)
+    new GaussianBaseModel(mean, vari)
   }
 }

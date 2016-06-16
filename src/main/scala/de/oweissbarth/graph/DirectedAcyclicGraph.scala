@@ -20,7 +20,7 @@ class DirectedAcyclicGraph{
 		val allParentNodes = allParentsIDs.map({case(e) => e.map({case(a)=>nodes(a)})})
 		
 		val zippedList = nodes.zip(allParentNodes)
-		zippedList.map({case (node, hisParentNodes) => node.parents = hisParentNodes})
+		zippedList.map({case (node, hisParentNodes) => node.parents = hisParentNodes.toArray})
 	}
 	
 	def getNodeByLabel(label: String) = {
@@ -34,7 +34,7 @@ class DirectedAcyclicGraph{
 	 * 
 	 */
 	def isValid():Boolean = {
-	  def visit(nodes: List[Node], known: List[Node]):Boolean={
+	  def visit(nodes: Array[Node], known: List[Node]):Boolean={
 	    if(nodes.intersect(known).length != 0){
 	      false
 	    }else{
@@ -45,7 +45,7 @@ class DirectedAcyclicGraph{
 	    }
 	    
 	  }
-	  visit(nodes.values.toList, List())
+	  visit(nodes.values.toArray, List())
 	}
 	
 	override def toString():String={

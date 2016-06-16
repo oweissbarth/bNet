@@ -38,7 +38,7 @@ class BayesianNetwork(private val graphProvider: GraphProvider, private val samp
   logger.info("Graph built.")
 
   def fit():Unit = {
-    graph.nodes.values.map(_.fit)
+    graph.nodes.values.map(_.fit(sample.records))
   }
   
   def setModelType(label:String, modelType: ModelProvider) ={
