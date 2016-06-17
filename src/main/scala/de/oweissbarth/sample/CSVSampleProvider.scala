@@ -11,8 +11,9 @@ class CSVSampleProvider(filepath :String, delimiter: String ) extends SampleProv
 
 
 
-	def getSample()(implicit sqlc: SQLContext ): Sample = {
+	def getSample(): Sample = {
     val sc = SparkContext.getOrCreate()
+    val sqlc = SQLContext.getOrCreate(sc)
 
     val file = sqlc.read.format("com.databricks.spark.csv").option("header", "true").option("delimiter", delimiter).option("inferSchema", "true").load(filepath)
 
