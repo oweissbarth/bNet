@@ -1,5 +1,6 @@
 package de.oweissbarth
 
+import de.oweissbarth.graph.Node
 import de.oweissbarth.model.SimpleLinearModelProvider
 import de.oweissbarth.sample.CSVSampleProvider
 import org.apache.spark.mllib.linalg.Vectors
@@ -34,20 +35,17 @@ class SimpleLinearModelProviderTest extends  FlatSpec with Matchers with BeforeA
   }
 
   it should " compute the correct distribution of categories within a given dataset" in {
-    val sc = SparkContext.getOrCreate()
-    implicit val sqlc = SQLContext.getOrCreate(SparkContext.getOrCreate())
-
 
     val sp = new CSVSampleProvider("src/test/resources/xy_data.csv", "\t")
 
     val scmp = new SimpleLinearModelProvider()
 
-    val data = sp.getSample().records.map(r=> LabeledPoint(r.getDouble(1), Vectors.dense(r.getDouble(0))))
+    val subDataSet = sp.getSample().records.select("y", "x")
 
-    val model = scmp.getModel(sqlc.createDataFrame(data), Array())
+    val model = scmp.getModel(subDataSet, Array(new Node("x")))
 
-    model.coefficients(0).toInt should be (12)
-    model.intercept.toInt should be (300)
+    model.parameters.get("").get._1(0).toInt should be (12)
+    model.parameters.get("").get._2.toInt should be (300)
 
   }
 }
