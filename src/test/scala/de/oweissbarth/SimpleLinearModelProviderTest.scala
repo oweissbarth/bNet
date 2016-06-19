@@ -1,7 +1,7 @@
 package de.oweissbarth
 
 import de.oweissbarth.graph.Node
-import de.oweissbarth.model.SimpleLinearModelProvider
+import de.oweissbarth.model.{GaussianBaseModelProvider, SimpleCategoricalModelProvider, SimpleLinearModelProvider}
 import de.oweissbarth.sample.CSVSampleProvider
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.regression.LabeledPoint
@@ -34,7 +34,7 @@ class SimpleLinearModelProviderTest extends  FlatSpec with Matchers with BeforeA
     scmp should not be null
   }
 
-  it should " compute the correct distribution of categories within a given dataset" in {
+  it should " compute the correct linear parameters within a given dataset without categorical parents " in {
 
     val sp = new CSVSampleProvider("src/test/resources/xy_data.csv", "\t")
 
@@ -46,6 +46,29 @@ class SimpleLinearModelProviderTest extends  FlatSpec with Matchers with BeforeA
 
     model.parameters.get("").get._1(0).toInt should be (12)
     model.parameters.get("").get._2.toInt should be (300)
+
+  }
+
+  it should " compute the correct linear parameters within a given dataset with categorical parents " in {
+
+    val sp = new CSVSampleProvider("src/test/resources/ageGenderIncome.csv", ";")
+
+    val scmp = new SimpleLinearModelProvider()
+
+    val subDataSet = sp.getSample().records.select("Income", "Gender", "Age")
+
+    val age = new Node("Age")
+    val gender = new Node("Gender")
+
+    age.modelProvider = Some(new GaussianBaseModelProvider())
+    gender.modelProvider = Some(new SimpleCategoricalModelProvider())
+
+    val model = scmp.getModel(subDataSet, Array(gender, age))
+
+    model.parameters.foreach(println)
+
+    model.parameters.get("M").get._1(0).toInt should be (141)
+    model.parameters.get("M").get._2.toInt should be (300)
 
   }
 }

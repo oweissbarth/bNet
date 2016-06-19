@@ -21,25 +21,30 @@ class SimpleLinearModelProvider extends ModelProvider {
 
     var parameters : Map[String, (Vector, Double)] = new HashMap()
 
-
-    val categoricalParents = parents.filter(n => n.modelProvider.getOrElse(false).isInstanceOf[CategoricalModelProvider]).map(n=>n.label).map(label=> subDataSet.col(label))
+    val categoricalParents = parents.filter(n => n.modelProvider.getOrElse(false).isInstanceOf[CategoricalModelProvider]).map(n=>n.label)
 
     logger.info(s"Found ${categoricalParents.length} categorical parents.")
 
 
     if(categoricalParents.length  > 0){
-      val categoryCombinations = subDataSet.select(categoricalParents:_*).distinct().map(r=>r.toSeq.map(e=>e.toString))
-      logger.info(s"Fitting models for ${categoryCombinations.count()} category combinations.")
+      val categoricalColumns = categoricalParents.map(label=> subDataSet.col(label))
+      val parentColumns = parents.map(node => subDataSet.col(node.label))
+      val allColumns = (subDataSet.col(subDataSet.columns(0)))+:parentColumns
+      val categoryCombinations = subDataSet.select(categoricalColumns:_*).distinct().map(r=>r.toSeq.map(e=>e.toString)).collect()
+      logger.info(s"Fitting models for ${categoryCombinations.length} category combinations.")
       categoryCombinations.foreach(c=>{
-        val conditional = categoricalParents.map(a=>a.toString()).zip(c).map(c=>c._1+"="+c._2).reduceLeft((c1, c2)=>c1+"AND"+c2)
-        val data = subDataSet.where(conditional).map(r=> LabeledPoint(r.getDouble(0), Vectors.dense(r.toSeq.toArray.map(
+        val conditional = categoricalParents.map(a=>a.toString()).zip(c).map(c=>c._1+"=\'"+c._2+"\'").reduceLeft((c1, c2)=>c1+"AND"+c2)
+        val selectedData = subDataSet.where(conditional).select(allColumns.diff(categoricalColumns):_*)
+        selectedData.columns.foreach(println)
+        val data = selectedData.map(r=> LabeledPoint(r.getDouble(0), Vectors.dense(r.toSeq.toArray.drop(1).map(
           _ match{
             case d: Double =>d
-            case default => Double.NaN
+            case default =>/* logger.error(s"Value $default is not of type double. ");*/ Double.NaN
           } ))))
+        println(data.first())
         val lr = new LinearRegression()
         val result = lr.fit(sqlc.createDataFrame(data))
-        val newParam = (c.toString() ->(result.coefficients, result.intercept))
+        val newParam = (c.reduce((a,b)=>a+","+b) ->(result.coefficients, result.intercept))
         parameters = parameters + newParam
       })
 
