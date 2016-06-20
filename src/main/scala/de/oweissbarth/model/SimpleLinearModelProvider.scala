@@ -7,7 +7,6 @@ import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.ml.regression.LinearRegression
 import org.apache.spark.mllib.linalg.{Vector, Vectors}
 import org.apache.spark.mllib.regression.LabeledPoint
-import org.apache.spark.rdd.RDD
 
 import scala.collection.immutable.HashMap
 
@@ -35,13 +34,11 @@ class SimpleLinearModelProvider extends ModelProvider {
       categoryCombinations.foreach(c=>{
         val conditional = categoricalParents.map(a=>a.toString()).zip(c).map(c=>c._1+"=\'"+c._2+"\'").reduceLeft((c1, c2)=>c1+"AND"+c2)
         val selectedData = subDataSet.where(conditional).select(allColumns.diff(categoricalColumns):_*)
-        selectedData.columns.foreach(println)
         val data = selectedData.map(r=> LabeledPoint(r.getDouble(0), Vectors.dense(r.toSeq.toArray.drop(1).map(
           _ match{
             case d: Double =>d
             case default =>/* logger.error(s"Value $default is not of type double. ");*/ Double.NaN
           } ))))
-        println(data.first())
         val lr = new LinearRegression()
         val result = lr.fit(sqlc.createDataFrame(data))
         val newParam = (c.reduce((a,b)=>a+","+b) ->(result.coefficients, result.intercept))

@@ -64,11 +64,9 @@ class SimpleLinearModelProviderTest extends  FlatSpec with Matchers with BeforeA
     gender.modelProvider = Some(new SimpleCategoricalModelProvider())
 
     val model = scmp.getModel(subDataSet, Array(gender, age))
-
-    model.parameters.foreach(println)
-
+    
     model.parameters.get("M").get._1(0).toInt should be (141)
-    model.parameters.get("M").get._2.toInt should be (300)
+    model.parameters.get("M").get._2.toInt should be (-1857)
 
   }
 }
