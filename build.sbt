@@ -4,7 +4,7 @@ version := "1.0"
 
 scalaVersion := "2.11.8"
 
-libraryDependencies ~= { _.map(_.exclude("org.slf4j", "slf4j-jdk14")) }
+//libraryDependencies ~= { _.map(_.exclude("org.slf4j", "slf4j-jdk14")) }
 
 
 /*JUnit*/
@@ -14,13 +14,20 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 
 
 /*XML */
-libraryDependencies += "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.2"
+libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.2"
 
 /*Spark*/
 libraryDependencies += "org.apache.spark" %% "spark-core" % "1.6.1"
 libraryDependencies += "org.apache.spark" %% "spark-sql" % "1.6.1"
 libraryDependencies += "org.apache.spark" %% "spark-mllib" % "1.6.1"
 libraryDependencies += "com.databricks" %% "spark-csv" % "1.4.0"
+
+
+
+libraryDependencies += "com.github.fommil.netlib" % "all" % "1.1.2"
+
+
+
 
 
 /*Logging*/
