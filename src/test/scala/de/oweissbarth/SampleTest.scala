@@ -55,13 +55,13 @@ class SampleTest extends FlatSpec with BeforeAndAfterAll with MustMatchers{
     val sc = SparkContext.getOrCreate()
     implicit val sqlc = SQLContext.getOrCreate(sc)
 
-    val prov = new CSVSampleProvider("src/test/resources/genderAgeIncome.csv", ",")
+    val prov = new CSVSampleProvider("src/test/resources/ageGenderIncome.csv", ";")
 
     val recordFields = prov.getSample().records.first()
 
-    assert(recordFields(0).isInstanceOf[String])
-    assert(recordFields(1).isInstanceOf[Integer])
-    assert(recordFields(2).isInstanceOf[Integer])
+    assert(recordFields(0).isInstanceOf[Double])
+    assert(recordFields(1).isInstanceOf[String])
+    assert(recordFields(2).isInstanceOf[Double])
   }
 
 

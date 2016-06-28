@@ -48,9 +48,9 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
   }
 
   it should "have a working method to set and retrieve the node type" in {
-    val gp = new GraphMLGraphProvider("src/test/resources/genderAgeIncome.gml")
+    val gp = new GraphMLGraphProvider("src/test/resources/ageGenderIncome.gml")
     assert(gp != null)
-    val sp = new CSVSampleProvider("src/test/resources/genderAgeIncome.csv", ",")
+    val sp = new CSVSampleProvider("src/test/resources/ageGenderIncome.csv", ",")
     assert(sp != null)
 
     val bn = new BayesianNetwork(gp, sp)
@@ -93,7 +93,7 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
 
     val sp = new CSVSampleProvider("src/test/resources/ageGenderIncome.csv", ";")
 
-    val gp = new GraphMLGraphProvider("src/test/resources/genderAgeIncome.gml")
+    val gp = new GraphMLGraphProvider("src/test/resources/ageGenderIncome.gml")
 
     val bn = new BayesianNetwork(gp, sp)
 

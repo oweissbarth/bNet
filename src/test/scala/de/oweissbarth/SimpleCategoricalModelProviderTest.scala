@@ -7,6 +7,8 @@ import org.apache.spark.sql.{Row, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
 import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 
+import scala.math.round
+
 /**
   * Created by oliver on 6/11/16.
   */
@@ -37,14 +39,16 @@ class SimpleCategoricalModelProviderTest extends  FlatSpec with Matchers with Be
     implicit val sqlc = SQLContext.getOrCreate(SparkContext.getOrCreate())
 
 
-    val sp = new CSVSampleProvider("src/test/resources/genderAgeIncome.csv", ",")
+    val sp = new CSVSampleProvider("src/test/resources/ageGenderIncome.csv", ";")
 
     val scmp = new SimpleCategoricalModelProvider()
 
 
-    val model = scmp.getModel(sp.getSample().records, Array())
+    val model = scmp.getModel(sp.getSample().records.select("Gender"), Array())
 
-    model.distribution(0) should be (0.4)
-    model.distribution(1) should be (0.6)
+    print(round(model.distribution(0)*10))
+
+    round(model.distribution(0)*10) should be (4)
+    round(model.distribution(1)*10) should be (6)
   }
 }
