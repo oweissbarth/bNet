@@ -2,7 +2,7 @@ name := "bayesian"
 
 version := "1.0"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.10.6"
 
 //libraryDependencies ~= { _.map(_.exclude("org.slf4j", "slf4j-jdk14")) }
 
@@ -14,7 +14,7 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 
 
 /*XML */
-libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.2"
+//libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.2" //NOTE this is included in scala 2.10. Remmeber to readd when going to spark 2.0
 
 /*Spark*/
 libraryDependencies += "org.apache.spark" %% "spark-core" % "1.6.1"
