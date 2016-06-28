@@ -6,4 +6,6 @@ import org.apache.spark.sql.DataFrame
 
 abstract class Model {
   def model(dependencies:  DataFrame)
+
+  def asJson(): String
 }

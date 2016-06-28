@@ -2,9 +2,10 @@ package de.oweissbarth
 
 
 import de.oweissbarth.core.BayesianNetwork
-import de.oweissbarth.model.{GaussianBaseModelProvider, SimpleLinearModelProvider}
-import de.oweissbarth.graph.GraphMLGraphProvider
+import de.oweissbarth.model.{GaussianBaseModelProvider, SimpleCategoricalModelProvider, SimpleLinearModelProvider}
+import de.oweissbarth.graph.{GraphMLGraphProvider, Node}
 import de.oweissbarth.sample.CSVSampleProvider
+import org.apache.log4j.LogManager
 import org.scalatest._
 
 
@@ -83,5 +84,35 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
     bn.fit()
 
     bn.close()
+  }
+
+  it should "fit the full network and return correct models" in{
+    val logger = LogManager.getLogger(s"Fitting BaysianNetwork")
+
+
+
+    val sp = new CSVSampleProvider("src/test/resources/ageGenderIncome.csv", ";")
+
+    val gp = new GraphMLGraphProvider("src/test/resources/genderAgeIncome.gml")
+
+    val bn = new BayesianNetwork(gp, sp)
+
+    val slmp = new SimpleLinearModelProvider()
+    val gbmp = new GaussianBaseModelProvider()
+    val scmp = new SimpleCategoricalModelProvider()
+
+    bn.setModelType("Age", gbmp)
+    bn.setModelType("Gender", scmp)
+    bn.setModelType("Income", slmp)
+
+    bn.fit()
+
+    logger.warn(bn.getModel("Age"))
+    logger.warn(bn.getModel("Gender"))
+    logger.warn(bn.getModel("Income"))
+
+
+    bn.close()
+
   }
 }

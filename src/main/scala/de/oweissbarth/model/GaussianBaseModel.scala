@@ -8,4 +8,8 @@ class GaussianBaseModel(val expectation: Double, val variance: Double) extends M
   override def model(dependencies: DataFrame) = {
 
   }
+
+  override  def asJson() = {
+    s"{expectation: $expectation, variance: $variance}"
+  }
 }

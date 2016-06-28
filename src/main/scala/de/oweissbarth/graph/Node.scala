@@ -30,26 +30,15 @@ class Node(val label: String, var parents: Array[Node], var dataSet: Option[Reco
 
 
 	def fit(sample: DataFrame)= {
-   /* val logger = LogManager.getLogger(s"Fitting for $label")
+   val logger = LogManager.getLogger(s"Fitting for $label")
     val sqlc = SQLContext.getOrCreate(SparkContext.getOrCreate())
     if(dirty && modelProvider.isDefined){
       val subDataSet = sample.select(label, parents.map(b=>b.label):_*)
-      val m = modelProvider.get
-      val c = classOf[CategoricalModelProvider]
-      val i = classOf[IntervalModelProvider]
-      m match {
-        case c=> model = Some(modelProvider.get.getModel(subDataSet, parents))
-
-        case i=> model = Some(modelProvider.get.getModel(
-          sqlc.createDataFrame(subDataSet.map(
-            r=> LabeledPoint(r.getDouble(0), Vectors.dense(r.toSeq.drop(0).toArray[Double]))
-          )), parents)
-        )
-      }
-      dirty = true
+      model = Some(modelProvider.get.getModel(subDataSet, parents))
+      dirty = false
     }else{
       logger.warn("No Modelprovider specified. skipping")
-    }*/
+    }
 	}
 
 }

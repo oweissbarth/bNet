@@ -11,4 +11,8 @@ class SimpleCategoricalModel(val distribution: Array[Double]) extends Model {
   override def toString(): String ={
     "SimpleCategoricalModel: <"+ distribution.foreach(p => p.toString)+">"
   }
+
+  override  def asJson() = {
+    s"{distribution: ${distribution.map(_.toString).reduce(_+","+_)}}"
+  }
 }

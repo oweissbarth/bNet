@@ -7,6 +7,7 @@ import org.apache.log4j.LogManager
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SQLContext
 
+//TODO add alternative argument order
 class BayesianNetwork(private val graphProvider: GraphProvider, private val sampleProvider: SampleProvider){
 
   val sparkConf = new SparkConf()
@@ -55,6 +56,10 @@ class BayesianNetwork(private val graphProvider: GraphProvider, private val samp
 
   def getNodeType(label: String) = {
     graph.nodes(label).nodeType
+  }
+
+  def getModel(label :String) = {
+    graph.nodes(label).model.get.asJson()
   }
 
   def close() = {
