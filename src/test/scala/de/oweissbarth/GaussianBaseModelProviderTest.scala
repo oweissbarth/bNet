@@ -46,8 +46,8 @@ class GaussianBaseModelProviderTest extends  FlatSpec with Matchers with BeforeA
 
     val model = gbmp.getModel(data, Array())
 
-    model.expectation.toInt should be (59)
-    model.variance.toInt should be (550)
+    model.expectation should be (60.0 +- 0.2)
+    model.variance should be (550.0 +- 1.0)
 
   }
 }

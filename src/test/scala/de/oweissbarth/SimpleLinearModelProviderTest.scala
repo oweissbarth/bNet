@@ -44,8 +44,8 @@ class SimpleLinearModelProviderTest extends  FlatSpec with Matchers with BeforeA
 
     val model = scmp.getModel(subDataSet, Array(new Node("x")))
 
-    model.parameters.get("").get._1(0).toInt should be (12)
-    model.parameters.get("").get._2.toInt should be (300)
+    model.parameters.get("").get._1(0) should be (12.0 +- 0.5)
+    model.parameters.get("").get._2 should be (300.0 +- 1.0)
 
   }
 
@@ -65,8 +65,8 @@ class SimpleLinearModelProviderTest extends  FlatSpec with Matchers with BeforeA
 
     val model = scmp.getModel(subDataSet, Array(gender, age))
     
-    model.parameters.get("M").get._1(0).toInt should be (141)
-    model.parameters.get("M").get._2.toInt should be (-1857)
+    model.parameters.get("M").get._1(0) should be (141.81 +- 0.1)
+    model.parameters.get("M").get._2 should be (-1857.98 +- 0.1) // TODO this actually be 1927,...
 
   }
 }

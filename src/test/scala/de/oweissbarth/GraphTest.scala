@@ -23,17 +23,17 @@ class GraphTest extends FlatSpec with BeforeAndAfterAll with Matchers{
     }
     
     "A Node" should " be constructable without error" in{
-      assert(new Node("Test") != null)
+      new Node("Test") should not be null
     }
 
     it should "return the label by which it was constructed" in {
-      assert(new Node("Test").label == "Test")
+      new Node("Test").label should be ("Test")
     }
 
     
     " A Directed acyclic graph" should "construct from a list of labels and edges" in {
       val graph = new DirectedAcyclicGraph()
-      assert(graph != null)
+      graph should not be null
 
       val labels = List("1", "2", "3", "4")
       val edges = List((0,1), (0,3), (2,3), (3,1))
@@ -87,16 +87,16 @@ class GraphTest extends FlatSpec with BeforeAndAfterAll with Matchers{
       val proValid = new GraphMLGraphProvider("src/test/resources/example_graph.gml")
 
       val graphValid = proValid.getGraph()
-      assert(graphValid != null)
+      graphValid should not be null
 
-      assert(graphValid.isValid())
+      graphValid.isValid() should be (true)
 
       val proInvalid = new GraphMLGraphProvider("src/test/resources/example_graph_cyclic.gml")
 
       val graphInvalid = proInvalid.getGraph()
-      assert(graphInvalid != null)
+      graphInvalid should not be null
 
-      assert(!graphInvalid.isValid())
+      graphInvalid.isValid() should not be (true)
     }
 
 }
