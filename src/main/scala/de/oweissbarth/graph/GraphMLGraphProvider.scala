@@ -1,13 +1,18 @@
 package de.oweissbarth.graph
 
-import org.apache.spark.sql.SQLContext
-
 import scala.xml.XML
 
+/** Reads a graph from a GraphML file. Supplies a graph  to the bayesian network
+  * @constructor creates a new supplier
+  * @param filepath the graphml file location
+  */
 class GraphMLGraphProvider(filepath: String) extends GraphProvider{
 
-  
-  
+
+  /** returns the graph as read from the graphml file
+    *
+    * @return a directed acyclic graph
+    */
 	def getGraph(): DirectedAcyclicGraph = {
     val graph = new DirectedAcyclicGraph()
 
@@ -18,6 +23,5 @@ class GraphMLGraphProvider(filepath: String) extends GraphProvider{
     val edgeIds = edges.map({case(s, t)=> (labels.indexOf(s), labels.indexOf(t))}).toList
 
     graph.fromLabelsAndEdges(labels, edgeIds)
-    graph
 	}
 }

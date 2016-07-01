@@ -3,6 +3,9 @@ import de.oweissbarth.graph.Node
 import org.apache.spark.sql.DataFrame
 
 
+/** supplies a SimpleCategoricalModel
+  *
+  */
 class SimpleCategoricalModelProvider extends CategoricalModelProvider{
   override def getModel(d: DataFrame, parents: Array[Node]): SimpleCategoricalModel = {
 

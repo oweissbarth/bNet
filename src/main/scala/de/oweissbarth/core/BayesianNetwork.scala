@@ -7,6 +7,16 @@ import org.apache.log4j.LogManager
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SQLContext
 
+/** The full bayesian network
+  *
+  * When initialized this constructs a new spark context.
+  *
+  * @todo In the future it should be possible to pass an existing spark context as a parameter
+  *
+  * @constructor creates a new bayesian network
+  *
+  * @param graphProvider supplies a graph to the network
+  */
 class BayesianNetwork(private val graphProvider: GraphProvider){
 
   val sparkConf = new SparkConf()
@@ -35,18 +45,39 @@ class BayesianNetwork(private val graphProvider: GraphProvider){
                           }*/
   logger.info("Graph built.")
 
+  /** Models all nodes in the bayesian network
+    *
+    * @note Modelproviders for each node need to be specfied before running fit.
+    *
+    * @param sp supplies the data sample to model against
+    */
   def fit(sp: SampleProvider):Unit = {
     graph.nodes.values.map(_.fit(sp.getSample().records))
   }
-  
+
+  /** specifies how to model a specific node
+    *
+    * @param label the node's label
+    * @param modelType describes how a node is modelled
+    */
   def setModelType(label:String, modelType: ModelProvider) ={
     graph.nodes(label).modelProvider = Some(modelType)
   }
-  
+
+  /** returns the model type for a specific node
+    *
+    * @param label the node's label
+    * @return the nodes model provider
+    */
   def getModelType(label:String):ModelProvider ={
     graph.nodes(label).modelProvider.get
   }
 
+  /** set the Node type to categorical or interval
+    *
+    * @param label the node's label
+    * @param nodeType the
+    */
   def setNodeType(label: String, nodeType: Int)= {
     graph.nodes(label).nodeType = nodeType
   }
@@ -59,6 +90,9 @@ class BayesianNetwork(private val graphProvider: GraphProvider){
     graph.nodes(label).model.get.asJson()
   }
 
+  /** ends the bayesian network and stops the spark context
+    *
+    */
   def close() = {
     sc.stop()
   }

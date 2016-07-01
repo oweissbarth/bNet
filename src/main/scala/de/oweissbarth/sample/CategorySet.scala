@@ -1,6 +1,6 @@
-package de.oweissbarth.sample
+//UNUSED
 
-import scala.collection.SetLike
+package de.oweissbarth.sample
 
 class CategorySet(){
 

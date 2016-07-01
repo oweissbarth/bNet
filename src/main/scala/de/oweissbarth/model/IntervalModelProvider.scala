@@ -1,7 +1,7 @@
 package de.oweissbarth.model
 
-/**
-  * Created by oliver on 6/11/16.
+/** supplies a model to a bayesian network. Any modelProvider for interval data should extends this
+  *
   */
 abstract class IntervalModelProvider extends ModelProvider {
 

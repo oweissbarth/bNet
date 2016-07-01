@@ -1,17 +1,22 @@
 package de.oweissbarth.sample
 
 import org.apache.spark.sql.{Row, SQLContext}
-import de.oweissbarth.util.BayesianEncoders._
 import org.apache.spark.SparkContext
 
 import scala.util.Try
 
-
+/** supplies a Sample as read from a csv file
+  *
+  * @note the csv file has to have a header
+  *
+  * @param filepath where the csv file is stored
+  * @param delimiter how elements are split within a row
+  */
 class CSVSampleProvider(filepath :String, delimiter: String ) extends SampleProvider{
 
 
 
-	def getSample(): Sample = {
+	override def getSample(): Sample = {
     val sc = SparkContext.getOrCreate()
     val sqlc = SQLContext.getOrCreate(sc)
 
@@ -23,6 +28,8 @@ class CSVSampleProvider(filepath :String, delimiter: String ) extends SampleProv
 
 	}
 
+
+  //UNUSED
   private def constructRecord(line: Array[String]): Record ={
     new Record(line.map(i=> if(Try(i.toFloat).isSuccess)new IntervalField(i.toFloat)else new CategoricalField(new Category(i))))
   }

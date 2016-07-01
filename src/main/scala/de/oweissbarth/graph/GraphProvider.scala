@@ -1,7 +1,12 @@
 package de.oweissbarth.graph
 
-import org.apache.spark.sql.SQLContext
-
+/** supplies the bayesian network with a graph
+  *
+  */
 abstract class GraphProvider{
-	def getGraph():DirectedAcyclicGraph;
+  /** returns a directed acyclic graph
+    *
+    * @return a directed acyclic graph
+    */
+  def getGraph():DirectedAcyclicGraph;
 }

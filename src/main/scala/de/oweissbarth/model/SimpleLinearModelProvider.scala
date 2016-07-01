@@ -10,7 +10,12 @@ import org.apache.spark.mllib.regression.LabeledPoint
 
 import scala.collection.immutable.HashMap
 
+/** supplies a SimpleLinearModel to a bayesian Network
+  *
+  */
 class SimpleLinearModelProvider extends ModelProvider {
+
+  //TODO requires documentation
   def getModel(subDataSet: DataFrame, parents : Array[Node]): SimpleLinearModel = {
 
     val sc = SparkContext.getOrCreate()

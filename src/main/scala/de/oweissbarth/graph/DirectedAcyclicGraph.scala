@@ -2,6 +2,10 @@ package de.oweissbarth.graph
 
 import scala.collection.immutable.HashMap;
 
+/** a graph with directed edges and without cycles
+  *
+  * @constructor creates a new empty graph
+  */
 class DirectedAcyclicGraph{
 
 	var nodes: HashMap[String, Node] = HashMap()
@@ -11,7 +15,7 @@ class DirectedAcyclicGraph{
 	 * @param labels a List of node names
 	 * @param edges a list of int tuples describing the edges (zero indexed)
 	 */
-	def fromLabelsAndEdges(labels: List[String], edges: List[(Int, Int)]) = {
+	def fromLabelsAndEdges(labels: List[String], edges: List[(Int, Int)]): DirectedAcyclicGraph = {
 
 		val nodes = labels.map(new Node(_))
 		this.nodes = HashMap(labels.zip(nodes): _*)
@@ -21,18 +25,20 @@ class DirectedAcyclicGraph{
 		
 		val zippedList = nodes.zip(allParentNodes)
 		zippedList.map({case (node, hisParentNodes) => node.parents = hisParentNodes.toArray})
+    this
 	}
-	
+
+  //UNUSED
 	def getNodeByLabel(label: String) = {
 	  
 	}
-	
-	
-	/**checks if the graph is acyclic
-	 * 
-	 * TODO make this more efficient
-	 * 
-	 */
+
+
+  /** checks if the graph is acyclic
+    * @todo make this more efficient
+    *
+    * @return true if the graph is acyclic, false if not
+    */
 	def isValid():Boolean = {
 	  def visit(nodes: Array[Node], known: List[Node]):Boolean={
 	    if(nodes.intersect(known).length != 0){
@@ -47,7 +53,11 @@ class DirectedAcyclicGraph{
 	  }
 	  visit(nodes.values.toArray, List())
 	}
-	
+
+  /** Creates a human readable representation of the graph
+    *
+    * @return a string representation of the graph
+    */
 	override def toString():String={
 	  "DirectedAcyclicGraph: " + this.nodes
 	}
