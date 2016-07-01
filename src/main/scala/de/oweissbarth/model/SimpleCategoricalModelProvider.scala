@@ -11,8 +11,7 @@ class SimpleCategoricalModelProvider extends CategoricalModelProvider{
 
     val total: Double = d.count()
 
-    val amount = d.groupBy(d.columns(0)).count().map(a => a.getLong(1)/total)
-
-    new SimpleCategoricalModel(amount.collect())
+    val distribution = d.groupBy(d.columns(0)).count().collect().map(r => (r.getString(0) -> r.getLong(1)/total)).toMap
+    new SimpleCategoricalModel(distribution)
   }
 }

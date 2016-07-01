@@ -8,7 +8,7 @@ import org.apache.spark.sql.DataFrame
   *
   * @param distribution the propability of each category
   */
-class SimpleCategoricalModel(val distribution: Array[Double]) extends Model {
+class SimpleCategoricalModel(val distribution: Map[String, Double]) extends Model {
   override def model(dependencies: DataFrame): Unit = {}
 
 

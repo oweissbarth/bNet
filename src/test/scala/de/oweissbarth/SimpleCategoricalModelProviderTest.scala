@@ -46,7 +46,7 @@ class SimpleCategoricalModelProviderTest extends  FlatSpec with Matchers with Be
 
     val model = scmp.getModel(sp.getSample().records.select("Gender"), Array())
 
-    model.distribution(0) should be (0.4 +- 0.01)
-    model.distribution(1) should be (0.6 +- 0.01)
+    model.distribution("F") should be (0.4 +- 0.01)
+    model.distribution("M") should be (0.6 +- 0.01)
   }
 }
