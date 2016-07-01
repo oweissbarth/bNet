@@ -3,21 +3,18 @@ package de.oweissbarth.graph
 import org.apache.log4j.LogManager
 import de.oweissbarth.core.BayesianNetwork
 import de.oweissbarth.model._
-import de.oweissbarth.sample._
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.{DataFrame, SQLContext}
 
 /** a node in a DirectedAcyclicGraph
   *
-  * @todo remove dataSet parameter
   *
   * @constructor creates a new node
   *
   * @param label the label of the node
   * @param parents an array containing the parent nodes
-  * @param dataSet
   */
-class Node(val label: String, var parents: Array[Node], var dataSet: Option[Record]){
+class Node(val label: String, var parents: Array[Node]){
 	var dirty = true
   var model :Option[Model]= None
   var modelProvider : Option[ModelProvider] = None
