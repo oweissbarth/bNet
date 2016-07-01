@@ -28,9 +28,13 @@ class DirectedAcyclicGraph{
     this
 	}
 
-  //UNUSED
-	def getNodeByLabel(label: String) = {
-	  
+  /** returns the node with a given label
+    *
+    * @param label the node's label
+    * @return the node with the given label
+    */
+	def getNodeByLabel(label: String): Node = {
+	  nodes(label)
 	}
 
 

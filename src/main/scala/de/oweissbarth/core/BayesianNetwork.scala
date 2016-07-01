@@ -70,11 +70,11 @@ class BayesianNetwork(private val graphProvider: GraphProvider){
     * @return the nodes model provider
     */
   def getModelType(label:String):ModelProvider ={
-    graph.nodes(label).modelProvider.get
+    graph.getNodeByLabel(label).modelProvider.get
   }
 
   def getModel(label :String) = {
-    graph.nodes(label).model.get.asJson()
+    graph.getNodeByLabel(label).model.get.asJson()
   }
 
   /** ends the bayesian network and stops the spark context
