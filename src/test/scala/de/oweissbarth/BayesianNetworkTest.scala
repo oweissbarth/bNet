@@ -15,10 +15,8 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
   "A BayesianNetwork" should "be constructable from graph and Sample" in {
     val gp = new GraphMLGraphProvider("src/test/resources/xy_graph.gml")
     assert(gp != null)
-    val sp = new CSVSampleProvider("src/test/resources/xy_data.csv", "\t")
-    assert(sp != null)
 
-    val bn = new BayesianNetwork(gp, sp)
+    val bn = new BayesianNetwork(gp)
 
     assert(bn != null)
 
@@ -30,10 +28,8 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
   it should "have a working method to set and retrieve the model type per node " in {
     val gp = new GraphMLGraphProvider("src/test/resources/xy_graph.gml")
     assert(gp != null)
-    val sp = new CSVSampleProvider("src/test/resources/xy_data.csv", "\t")
-    assert(sp != null)
 
-    val bn = new BayesianNetwork(gp, sp)
+    val bn = new BayesianNetwork(gp)
 
     assert(bn != null)
 
@@ -50,10 +46,8 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
   it should "have a working method to set and retrieve the node type" in {
     val gp = new GraphMLGraphProvider("src/test/resources/ageGenderIncome.gml")
     assert(gp != null)
-    val sp = new CSVSampleProvider("src/test/resources/ageGenderIncome.csv", ",")
-    assert(sp != null)
 
-    val bn = new BayesianNetwork(gp, sp)
+    val bn = new BayesianNetwork(gp)
 
     assert(bn != null)
 
@@ -74,14 +68,14 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
     val sp = new CSVSampleProvider("src/test/resources/xy_data.csv", "\t")
     assert(sp != null)
 
-    val bn = new BayesianNetwork(gp, sp)
+    val bn = new BayesianNetwork(gp)
 
     assert(bn != null)
 
     bn.setModelType("x", new GaussianBaseModelProvider())
     bn.setModelType("y", new SimpleLinearModelProvider())
 
-    bn.fit()
+    bn.fit(sp)
 
     bn.close()
   }
@@ -95,7 +89,7 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
 
     val gp = new GraphMLGraphProvider("src/test/resources/ageGenderIncome.gml")
 
-    val bn = new BayesianNetwork(gp, sp)
+    val bn = new BayesianNetwork(gp)
 
     val slmp = new SimpleLinearModelProvider()
     val gbmp = new GaussianBaseModelProvider()
@@ -105,7 +99,7 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
     bn.setModelType("Gender", scmp)
     bn.setModelType("Income", slmp)
 
-    bn.fit()
+    bn.fit(sp)
 
     logger.warn(bn.getModel("Age"))
     logger.warn(bn.getModel("Gender"))

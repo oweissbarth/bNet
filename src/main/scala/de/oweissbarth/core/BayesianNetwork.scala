@@ -7,8 +7,7 @@ import org.apache.log4j.LogManager
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SQLContext
 
-//TODO add alternative argument order
-class BayesianNetwork(private val graphProvider: GraphProvider, private val sampleProvider: SampleProvider){
+class BayesianNetwork(private val graphProvider: GraphProvider){
 
   val sparkConf = new SparkConf()
 
@@ -23,14 +22,12 @@ class BayesianNetwork(private val graphProvider: GraphProvider, private val samp
   logger.info("Getting graph...")
   private val graph = graphProvider.getGraph()
   logger.info("done...")
-  logger.info("Getting sample...")
-  private val sample = sampleProvider.getSample()
   logger.info("done...")
-  
-  logger.info("trying to match columns and nodes...")
+
+  /*logger.info("trying to match columns and nodes...")
   logger.info(sample.records.schema)
 
-  /*{ r => if(graph.nodes.contains(r.label)){
+  { r => if(graph.nodes.contains(r.label)){
                                     logger.info("matched column "+d.label+" to node with same name")
                                     graph.nodes(d.label).dataSet = Some(d)
                                   }else{ 
@@ -38,8 +35,8 @@ class BayesianNetwork(private val graphProvider: GraphProvider, private val samp
                           }*/
   logger.info("Graph built.")
 
-  def fit():Unit = {
-    graph.nodes.values.map(_.fit(sample.records))
+  def fit(sp: SampleProvider):Unit = {
+    graph.nodes.values.map(_.fit(sp.getSample().records))
   }
   
   def setModelType(label:String, modelType: ModelProvider) ={
