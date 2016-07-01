@@ -73,19 +73,6 @@ class BayesianNetwork(private val graphProvider: GraphProvider){
     graph.nodes(label).modelProvider.get
   }
 
-  /** set the Node type to categorical or interval
-    *
-    * @param label the node's label
-    * @param nodeType the
-    */
-  def setNodeType(label: String, nodeType: Int)= {
-    graph.nodes(label).nodeType = nodeType
-  }
-
-  def getNodeType(label: String) = {
-    graph.nodes(label).nodeType
-  }
-
   def getModel(label :String) = {
     graph.nodes(label).model.get.asJson()
   }
@@ -96,14 +83,6 @@ class BayesianNetwork(private val graphProvider: GraphProvider){
   def close() = {
     sc.stop()
   }
-
-
-}
-
-object BayesianNetwork{
-  val NONE        : Int = -1
-  val CATEGORICAL : Int =  0
-  val INTERVAL    : Int =  1
 
 
 }

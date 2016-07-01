@@ -19,9 +19,6 @@ class Node(val label: String, var parents: Array[Node]){
   var model :Option[Model]= None
   var modelProvider : Option[ModelProvider] = None
 
-	// UNUSED
-	var nodeType = BayesianNetwork.NONE
-
 
   /** creates a new node just from a label
     *
