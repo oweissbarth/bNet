@@ -43,25 +43,6 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
     bn.close()
   }
 
-  it should "have a working method to set and retrieve the node type" in {
-    val gp = new GraphMLGraphProvider("src/test/resources/ageGenderIncome.gml")
-    assert(gp != null)
-
-    val bn = new BayesianNetwork(gp)
-
-    assert(bn != null)
-
-    bn.setNodeType("Age", BayesianNetwork.INTERVAL)
-    bn.setNodeType("Gender", BayesianNetwork.CATEGORICAL)
-    bn.setNodeType("Income", BayesianNetwork.INTERVAL)
-
-    bn.getNodeType("Age") should be (BayesianNetwork.INTERVAL)
-    bn.getNodeType("Gender") should be (BayesianNetwork.CATEGORICAL)
-    bn.getNodeType("Income") should be (BayesianNetwork.INTERVAL)
-
-    bn.close()
-  }
-
   it should "run fit without errors " in {
     val gp = new GraphMLGraphProvider("src/test/resources/xy_graph.gml")
     assert(gp != null)

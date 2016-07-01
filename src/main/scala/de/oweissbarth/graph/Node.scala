@@ -27,7 +27,7 @@ class Node(val label: String, var parents: Array[Node]){
     * @todo remove this constructor. make parents val
     */
 	def this(label:String) = {
-		this(label, Array(), None)
+		this(label, Array())
 	}
 
   /** returns a human readable representation of the node

@@ -23,17 +23,6 @@ class SampleTest extends FlatSpec with BeforeAndAfterAll with Matchers{
     sc.stop()
   }
 
-  "An IntervalField" should "construct without Exceptions and be non null" in{
-    val interval = new IntervalField(2.4f)
-    assert(interval != null)
-  }
-
-  "An CategoricalField" should "construct without Exceptions and be non null" in{
-    val categorySet = new CategorySet()
-    val categorical = new CategoricalField(categorySet.get("Male"))
-    assert(categorical != null)
-  }
-
  "A CSVSampleProvider" should "be non null after creation" in {
    val sc = SparkContext.getOrCreate()
    implicit val sqlc = SQLContext.getOrCreate(SparkContext.getOrCreate())
