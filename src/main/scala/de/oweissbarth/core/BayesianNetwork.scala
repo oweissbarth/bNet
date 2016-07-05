@@ -77,6 +77,13 @@ class BayesianNetwork(private val graphProvider: GraphProvider){
     graph.getNodeByLabel(label).model.get.asJson()
   }
 
+  /** returns a json representation of the bayesian network
+    *
+    * @return a json representation of the bayesian network
+    */
+  def asJson() = {
+    graph.asJson()
+  }
   /** ends the bayesian network and stops the spark context
     *
     */

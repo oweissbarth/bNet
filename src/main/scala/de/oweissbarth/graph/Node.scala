@@ -56,4 +56,12 @@ class Node(val label: String, var parents: Array[Node]){
     }
 	}
 
+  /** returns a json representation of the node
+    *
+    * @return  a json represenation of the node
+    */
+  def asJson() = {
+    s"{label: $label, parents: [${if(parents.nonEmpty) parents.map(_.label).reduce(_+", "+ _)else ""}], model: ${if(model.isDefined) model.get.asJson() else "None"}}"
+  }
+
 }

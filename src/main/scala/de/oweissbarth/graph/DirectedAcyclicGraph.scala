@@ -65,4 +65,12 @@ class DirectedAcyclicGraph{
 	override def toString():String={
 	  "DirectedAcyclicGraph: " + this.nodes
 	}
+
+  /** returns a json representation of the dag
+    *
+    * @return a json representation of the node
+    */
+    def asJson() = {
+      s"{BayesianNetwork: [${nodes.map(_._2.asJson()).reduce(_+", "+_)}]}"
+    }
 }
