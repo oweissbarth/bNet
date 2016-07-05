@@ -18,6 +18,6 @@ class GaussianBaseModel(val expectation: Double, val variance: Double) extends M
     * @return a json representation of the model
     */
   override  def asJson() = {
-    s"{expectation: $expectation, variance: $variance}"
+    s"{GaussianBaseModel: {expectation: $expectation, variance: $variance}}"
   }
 }

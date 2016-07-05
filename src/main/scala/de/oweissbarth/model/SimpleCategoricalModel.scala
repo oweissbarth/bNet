@@ -25,6 +25,6 @@ class SimpleCategoricalModel(val distribution: Map[String, Double]) extends Mode
     * @return a json representation of the model
     */
   override  def asJson() = {
-    s"{distribution: ${distribution.map(_.toString).reduce(_+","+_)}}"
+    s"{SimpleCategoricalModel: {distribution: [${distribution.map(e => s"${e._1}: ${e._2}").reduce(_+", "+_)}]}}"
   }
 }

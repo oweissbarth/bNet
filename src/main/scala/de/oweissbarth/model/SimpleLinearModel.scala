@@ -10,6 +10,6 @@ class SimpleLinearModel(val parameters: Map[String, (Vector, Double)]) extends M
   override def model(dependencies: DataFrame): Unit = {}
 
   override  def asJson() = {
-    s"{parameters: [${parameters}]}"
+    s"{SimpleLinearModel: {parameters: [${parameters.map(e=>"{"+e._1+": {gradient: "+e._2._1+", intercept: "+e._2._2+"}").reduce(_+", "+_)}}]}}"
   }
 }
