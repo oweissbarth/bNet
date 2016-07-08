@@ -18,3 +18,11 @@ abstract class Model {
     */
   def asJson(): String
 }
+
+abstract trait Persist[T /*<: Persist[T]*/]{ // TODO this is not working. No idea why
+  /** creates a new Model from json
+    *
+    */
+  def fromJson(json: String) : T
+
+}

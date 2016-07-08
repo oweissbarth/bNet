@@ -28,17 +28,36 @@ class PersistTest extends FlatSpec with BeforeAndAfterAll with Matchers{
     
     "A GaussianBaseModel " should "serialize to json correctly" in {
       val gm = new GaussianBaseModel(3.5, 1.34)
-      gm.asJson() should be ("{GaussianBaseModel: {expectation: 3.5, variance: 1.34}}")
+      gm.asJson() should be ("""{"GaussianBaseModel": {"expectation": 3.5, "variance": 1.34}}""")
     }
 
-    "A SimpleCategoricalModel " should "serialize to json correclty" in {
+    it should " deserialize from json correctly" in {
+      val gm = GaussianBaseModel.fromJson("""{"GaussianBaseModel": {"expectation": 3.5, "variance": 1.34}}""")
+      gm.expectation should be (3.5)
+      gm.variance should be (1.34)
+    }
+
+    "A SimpleCategoricalModel " should "serialize to json correctly" in {
       val cm = new SimpleCategoricalModel(Map("M"->0.4, "F"->0.6))
-      cm.asJson() should be ("{SimpleCategoricalModel: {distribution: [M: 0.4, F: 0.6]}}")
+      cm.asJson() should be ("""{"SimpleCategoricalModel": {"distribution": {"M": 0.4, "F": 0.6}}}""")
+    }
+
+    it should "deserialize from json correctly" in{
+      val cm = SimpleCategoricalModel.fromJson("""{"SimpleCategoricalModel": {"distribution": {"M": 0.4, "F": 0.6}}}""")
+      cm.distribution("M") should be (0.4)
+      cm.distribution("F") should be (0.6)
     }
 
     "A SimpleLinearModel " should "serialize to json correctly" in{
       val lm = new SimpleLinearModel(Map("M"->(Vectors.dense(0.3, 0.1), 1.2)))
-      lm.asJson() should be ("{SimpleLinearModel: {parameters: [{M: {gradient: [0.3,0.1], intercept: 1.2}}]}}")
+      lm.asJson() should be ("""{"SimpleLinearModel": {"parameters": {"M": {"gradient": [0.3,0.1], "intercept": 1.2}}}}""")
+    }
+
+    it should "deserialize from json correctly" in {
+      val lm = SimpleLinearModel.fromJson("""{"SimpleLinearModel": {"parameters": {"M": {"gradient": [0.3,0.1], "intercept": 1.2}}}}""")
+
+      lm.parameters("M")._1 should be (Vectors.dense(0.3,0.1))
+      lm.parameters("M")._2 should be (1.2)
     }
 
    "A Node " should "serialize to json correctly" in {
