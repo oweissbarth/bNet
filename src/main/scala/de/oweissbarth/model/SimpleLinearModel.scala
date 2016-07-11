@@ -14,13 +14,6 @@ import org.json4s.jackson.Serialization._
 case class SimpleLinearModel(parameters: Map[String, (Array[Double], Double)]) extends Model{
   override def model(dependencies: DataFrame): Unit = {}
 
-  override  def asJson() = {
-    implicit  val formats = new DefaultFormats{
-      override val typeHints = ShortTypeHints(List(classOf[SimpleLinearModel], classOf[SimpleCategoricalModel], classOf[GaussianBaseModel]))
-      override val typeHintFieldName = "type"
-    }
-    write(this)
-  }
 }
 
 object SimpleLinearModel extends Persist[SimpleLinearModel] {

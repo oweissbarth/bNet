@@ -113,7 +113,7 @@ class PersistTest extends FlatSpec with BeforeAndAfterAll with Matchers{
 
         }
 
-        def asJson(): String = {
+        override def asJson(): String = {
           s"""{"type": "ConstantModel", "value": $value}"""
         }
       }

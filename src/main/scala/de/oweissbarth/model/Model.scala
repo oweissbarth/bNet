@@ -1,6 +1,9 @@
 package de.oweissbarth.model
 
+import de.oweissbarth.core.BayesianNetwork
 import org.apache.spark.sql.DataFrame
+import org.json4s.jackson.Serialization._
+import org.json4s.{DefaultFormats, ShortTypeHints}
 
 /** a model that holds all calaculated parameters
   *
@@ -16,7 +19,13 @@ trait Model{
     *
     * @return a json representation of the model
     */
-  def asJson(): String
+  def asJson(): String = {
+    implicit  val formats = new DefaultFormats{
+      override val typeHints = ShortTypeHints(BayesianNetwork.modelTypes)
+      override val typeHintFieldName = "type"
+    }
+    write(this)
+  }
 }
 
 abstract trait Persist[T /*<: Persist[T]*/]{ // TODO this is not working. No idea why

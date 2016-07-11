@@ -19,21 +19,10 @@ case class SimpleCategoricalModel(distribution: Map[String, Double]) extends Mod
     *
     * @return a human readable representation of the model
     */
-  override def toString(): String ={
-    "SimpleCategoricalModel: <"+ distribution.foreach(p => p.toString)+">"
+  override def toString(): String = {
+    "SimpleCategoricalModel: <" + distribution.foreach(p => p.toString) + ">"
   }
 
-  /** returns  a json representation of the model
-    *
-    * @return a json representation of the model
-    */
-  override  def asJson() = {
-    implicit  val formats = new DefaultFormats{
-      override val typeHints = ShortTypeHints(List(classOf[SimpleLinearModel], classOf[SimpleCategoricalModel], classOf[GaussianBaseModel]))
-      override val typeHintFieldName = "type"
-    }
-    write(this)
-  }
 }
 
 object SimpleCategoricalModel extends Persist[SimpleCategoricalModel] {
