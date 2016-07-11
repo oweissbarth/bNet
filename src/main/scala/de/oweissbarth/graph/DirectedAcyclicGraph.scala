@@ -82,7 +82,6 @@ class DirectedAcyclicGraph(var nodes: HashMap[String, Node]= HashMap()){
 
 object DirectedAcyclicGraph{
   def fromJson(ast: JValue): DirectedAcyclicGraph = {
-    // TODO make that dynamic
     implicit  val formats = new DefaultFormats{
       override val typeHints = ShortTypeHints(BayesianNetwork.modelTypes)
       override val typeHintFieldName = "type"

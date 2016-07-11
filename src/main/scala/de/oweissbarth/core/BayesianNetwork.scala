@@ -78,6 +78,11 @@ class BayesianNetwork(private val graph: DirectedAcyclicGraph){
     graph.getNodeByLabel(label).modelProvider.get
   }
 
+  /** returns the model of a given node as json
+    *
+    * @param label the node's label
+    * @return the model asJson
+    */
   def getModel(label :String) = {
     graph.getNodeByLabel(label).model.get.asJson()
   }
