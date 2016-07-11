@@ -1,5 +1,6 @@
 package de.oweissbarth.model
 
+import de.oweissbarth.core.BayesianNetwork
 import org.apache.spark.sql.DataFrame
 import org.apache.log4j.LogManager
 import org.json4s.{DefaultFormats, ShortTypeHints}
@@ -25,7 +26,7 @@ case class GaussianBaseModel(expectation: Double, variance: Double) extends Mode
     */
   override  def asJson() = {
     implicit  val formats = new DefaultFormats{
-      override val typeHints = ShortTypeHints(List(classOf[SimpleLinearModel], classOf[SimpleCategoricalModel], classOf[GaussianBaseModel]))
+      override val typeHints = ShortTypeHints(BayesianNetwork.modelTypes)
       override val typeHintFieldName = "type"
     }
     write(this)

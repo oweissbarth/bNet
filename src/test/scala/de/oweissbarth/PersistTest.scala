@@ -107,4 +107,20 @@ class PersistTest extends FlatSpec with BeforeAndAfterAll with Matchers{
       bn2.close()
     }
 
+    "The BayesianNetwork" should "allow registering of custom models" in {
+      case class ConstantModel(value: Double) extends Model{
+        def model(deps: org.apache.spark.sql.DataFrame)= {
+
+        }
+
+        def asJson(): String = {
+          s"""{"type": "ConstantModel", "value": $value}"""
+        }
+      }
+
+      BayesianNetwork.registerModelType(classOf[ConstantModel])
+
+      BayesianNetwork.modelTypes should contain (classOf[ConstantModel])
+    }
+
 }

@@ -1,5 +1,6 @@
 package de.oweissbarth.graph
 
+import de.oweissbarth.core.BayesianNetwork
 import de.oweissbarth.model.{GaussianBaseModel, Model, SimpleCategoricalModel, SimpleLinearModel}
 import org.json4s.{DefaultFormats, ShortTypeHints}
 import org.json4s.JsonAST.JValue
@@ -83,7 +84,7 @@ object DirectedAcyclicGraph{
   def fromJson(ast: JValue): DirectedAcyclicGraph = {
     // TODO make that dynamic
     implicit  val formats = new DefaultFormats{
-      override val typeHints = ShortTypeHints(List(classOf[SimpleLinearModel], classOf[SimpleCategoricalModel], classOf[GaussianBaseModel]))
+      override val typeHints = ShortTypeHints(BayesianNetwork.modelTypes)
       override val typeHintFieldName = "type"
     }
 
