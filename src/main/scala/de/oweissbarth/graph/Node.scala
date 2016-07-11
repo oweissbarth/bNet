@@ -30,6 +30,20 @@ class Node(val label: String, var parents: Array[Node]){
 		this(label, Array())
 	}
 
+
+  /** creates a new node from label, parents and model
+    *
+    * @note this is mainly used when loading a graph from a file
+    *
+    * @param label the nodes label
+    * @param parents the parent nodes
+    * @param model the model for this node
+    */
+  def this(label: String, parents: Array[Node], model: Model) = {
+    this(label, parents)
+    this.model = Option(model)
+  }
+
   /** returns a human readable representation of the node
     *
     * @return a human readable representation of the node
@@ -61,7 +75,7 @@ class Node(val label: String, var parents: Array[Node]){
     * @return  a json represenation of the node
     */
   def asJson() = {
-    s"{label: $label, parents: [${if(parents.nonEmpty) parents.map(_.label).reduce(_+", "+ _)else ""}], model: ${if(model.isDefined) model.get.asJson() else "None"}}"
+    s"""{"label": "$label", "parents": [${if(parents.nonEmpty) parents.map(_.label).reduce("""""""+_+"""", """"+ _+""""""")else ""}], "model": ${if(model.isDefined) model.get.asJson() else "null"}}"""
   }
 
 }

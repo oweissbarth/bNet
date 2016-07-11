@@ -1,14 +1,18 @@
 package de.oweissbarth.graph
 
-import scala.collection.immutable.HashMap;
+import de.oweissbarth.model.{GaussianBaseModel, Model, SimpleCategoricalModel, SimpleLinearModel}
+import org.json4s.{DefaultFormats, ShortTypeHints}
+import org.json4s.JsonAST.JValue
+
+import scala.collection.immutable.HashMap
+import org.json4s.jackson.JsonMethods._
+import org.json4s.jackson.Serialization
 
 /** a graph with directed edges and without cycles
   *
   * @constructor creates a new empty graph
   */
-class DirectedAcyclicGraph{
-
-	var nodes: HashMap[String, Node] = HashMap()
+class DirectedAcyclicGraph(var nodes: HashMap[String, Node]= HashMap()){
 	
 	/**Creates a Graph from a list of node labels and edges
 	 * 
@@ -71,6 +75,41 @@ class DirectedAcyclicGraph{
     * @return a json representation of the node
     */
     def asJson() = {
-      s"{BayesianNetwork: [${nodes.map(_._2.asJson()).reduce(_+", "+_)}]}"
+      s"""{"BayesianNetwork": [\n\t${nodes.map(_._2.asJson()).reduce(_+",\n\t"+_)}\n]}"""
     }
+}
+
+object DirectedAcyclicGraph{
+  def fromJson(ast: JValue): DirectedAcyclicGraph = {
+    // TODO make that dynamic
+    implicit  val formats = new DefaultFormats{
+      override val typeHints = ShortTypeHints(List(classOf[SimpleLinearModel], classOf[SimpleCategoricalModel], classOf[GaussianBaseModel]))
+      override val typeHintFieldName = "type"
+    }
+
+    //temporary node storage
+    case class JsonNode(label: String, parents: Array[String], model: Model)
+
+    val tmpNodes = for(c <- ast.children)yield  c.extract[JsonNode]
+
+    //sort nodes to build the graph
+    val leafs = tmpNodes.filter(_.parents.isEmpty).map(x=>(x.label, new Node(x.label, Array(), x.model))).toMap
+
+    // NOTE doing a topological sort might be faster here
+    def createNodesWithDeps(deps: Map[String, Node], open:List[JsonNode]):Map[String,Node] = {
+      if(open.isEmpty)
+        deps
+      else{
+        //split open nodes into nodes with satified dependecies and otherwise
+        val (current, newOpen) = open.partition(n=> n.parents.foldLeft(true)(_&& deps.contains(_)))
+        // create new nodes and add those to the depedencies
+        val newDeps = deps ++ current.map(n=> (n.label -> new Node(n.label, n.parents.map(p=>deps(p)), n.model)))
+        createNodesWithDeps(newDeps, newOpen)
+      }
+    }
+
+    val nodes = createNodesWithDeps(HashMap(), tmpNodes)
+
+    new DirectedAcyclicGraph(nodes.asInstanceOf[HashMap[String, Node]])
+  }
 }

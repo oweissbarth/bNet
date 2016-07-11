@@ -7,6 +7,8 @@ import org.apache.log4j.LogManager
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SQLContext
 
+import org.json4s.jackson.JsonMethods._
+
 /** The full bayesian network
   *
   * When initialized this constructs a new spark context.
@@ -15,9 +17,9 @@ import org.apache.spark.sql.SQLContext
   *
   * @constructor creates a new bayesian network
   *
-  * @param graphProvider supplies a graph to the network
+  * @param graph the graph for the network
   */
-class BayesianNetwork(private val graphProvider: GraphProvider){
+class BayesianNetwork(private val graph: DirectedAcyclicGraph){
 
   val sparkConf = new SparkConf()
 
@@ -27,12 +29,7 @@ class BayesianNetwork(private val graphProvider: GraphProvider){
 
 
   val logger = LogManager.getRootLogger
-  
-  logger.info("Constructing Bayesian Network...")
-  logger.info("Getting graph...")
-  private val graph = graphProvider.getGraph()
-  logger.info("done...")
-  logger.info("done...")
+
 
   /*logger.info("trying to match columns and nodes...")
   logger.info(sample.records.schema)
@@ -44,6 +41,14 @@ class BayesianNetwork(private val graphProvider: GraphProvider){
                                     logger.warn("Could not match column "+d.label+" to a node")}
                           }*/
   logger.info("Graph built.")
+
+  /** Constructs a BayesianNetwork from a GraphProvider
+    *
+    * @param graphProvider supplies the graph for the BayesianNetwork
+    */
+  def this(graphProvider: GraphProvider) = {
+    this(graphProvider.getGraph())
+  }
 
   /** Models all nodes in the bayesian network
     *
@@ -92,4 +97,17 @@ class BayesianNetwork(private val graphProvider: GraphProvider){
   }
 
 
+}
+
+object BayesianNetwork{
+  def fromJson(json: String): BayesianNetwork = {
+    val ast = parse(json)
+
+    //TODO check header
+
+    val graph = DirectedAcyclicGraph.fromJson(ast.children(0))
+
+
+    new BayesianNetwork(graph)
+  }
 }

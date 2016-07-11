@@ -5,7 +5,7 @@ import org.apache.spark.sql.DataFrame
 /** a model that holds all calaculated parameters
   *
   */
-abstract class Model {
+trait Model{
   /** applies the model to the given input parameters
     *
     * @param dependencies the variables of the mdel

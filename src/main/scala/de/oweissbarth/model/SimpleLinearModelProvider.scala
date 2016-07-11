@@ -63,6 +63,6 @@ class SimpleLinearModelProvider extends ModelProvider {
       parameters = parameters + newParam
     }
 
-    return new SimpleLinearModel(parameters)
+    new SimpleLinearModel(parameters.mapValues(e=>(e._1.toArray, e._2)))
   }
 }
