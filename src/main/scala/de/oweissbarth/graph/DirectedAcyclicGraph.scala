@@ -14,9 +14,10 @@ import org.json4s.jackson.Serialization
   * @constructor creates a new empty graph
   */
 class DirectedAcyclicGraph(var nodes: HashMap[String, Node]= HashMap()){
-	
+
+
 	/**Creates a Graph from a list of node labels and edges
-	 * 
+	 *
 	 * @param labels a List of node names
 	 * @param edges a list of int tuples describing the edges (zero indexed)
 	 */
@@ -27,7 +28,7 @@ class DirectedAcyclicGraph(var nodes: HashMap[String, Node]= HashMap()){
 		val parentsIDs = edges.groupBy(_._2).map({case (key, value)=> (key, value.map(_._1))})
 		val allParentsIDs = (0 to nodes.length-1).map(parentsIDs.get(_)).map({case(e)=>e.getOrElse(List[Int]())}).toList
 		val allParentNodes = allParentsIDs.map({case(e) => e.map({case(a)=>nodes(a)})})
-		
+
 		val zippedList = nodes.zip(allParentNodes)
 		zippedList.map({case (node, hisParentNodes) => node.parents = hisParentNodes.toArray})
     this
@@ -44,9 +45,9 @@ class DirectedAcyclicGraph(var nodes: HashMap[String, Node]= HashMap()){
 
 
   /** checks if the graph is acyclic
-    * @todo make this more efficient
-    *
-    * @return true if the graph is acyclic, false if not
+		*
+		* @todo make this more efficient
+		* @return true if the graph is acyclic, false if not
     */
 	def isValid():Boolean = {
 	  def visit(nodes: Array[Node], known: List[Node]):Boolean={
@@ -55,10 +56,10 @@ class DirectedAcyclicGraph(var nodes: HashMap[String, Node]= HashMap()){
 	    }else{
 	      nodes.map({
     	    case(node)=>
-    	      visit(node.parents, node::known)  
+    	      visit(node.parents, node::known)
     	    }).foldLeft(true)(_ && _)
 	    }
-	    
+
 	  }
 	  visit(nodes.values.toArray, List())
 	}
@@ -78,6 +79,14 @@ class DirectedAcyclicGraph(var nodes: HashMap[String, Node]= HashMap()){
     def asJson() = {
       s"""{"BayesianNetwork": [\n\t${nodes.map(_._2.asJson()).reduce(_+",\n\t"+_)}\n]}"""
     }
+
+  /** returns a copy of the graph. Nodes are immutable so not copied.
+    *
+    * @return
+    */
+	def copy() = {
+    new DirectedAcyclicGraph()
+  }
 }
 
 object DirectedAcyclicGraph{
