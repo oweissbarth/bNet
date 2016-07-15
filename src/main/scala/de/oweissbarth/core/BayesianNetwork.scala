@@ -19,16 +19,16 @@ import org.json4s.jackson.JsonMethods._
   *
   * @param graph the graph for the network
   */
-class BayesianNetwork(private val graph: DirectedAcyclicGraph){
+class BayesianNetwork(graph: DirectedAcyclicGraph){
 
-  val sparkConf = new SparkConf()
+  private val sparkConf = new SparkConf()
 
-  implicit val sc = new SparkContext("local", "Baysian", sparkConf)
+  private val sc = SparkContext.getOrCreate(sparkConf)
 
-  implicit val sqlc = new SQLContext(sc)
+  private val sqlc = new SQLContext(sc)
 
 
-  val logger = LogManager.getRootLogger
+  private val logger = LogManager.getRootLogger
 
 
   /*logger.info("trying to match columns and nodes...")
@@ -89,6 +89,12 @@ class BayesianNetwork(private val graph: DirectedAcyclicGraph){
   def asJson() = {
     graph.asJson()
   }
+
+
+  def copy() = {
+    new BayesianNetwork(this.graph.copy())
+  }
+
   /** ends the bayesian network and stops the spark context
     *
     */
