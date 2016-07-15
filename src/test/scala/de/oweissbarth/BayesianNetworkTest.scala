@@ -2,7 +2,7 @@ package de.oweissbarth
 
 
 import de.oweissbarth.core.BayesianNetwork
-import de.oweissbarth.model.{GaussianBaseModelProvider, SimpleCategoricalModelProvider, SimpleLinearModelProvider}
+import de.oweissbarth.model.{GaussianBaseModel, GaussianBaseModelProvider, SimpleCategoricalModelProvider, SimpleLinearModelProvider}
 import de.oweissbarth.graph.{GraphMLGraphProvider, Node}
 import de.oweissbarth.sample.CSVSampleProvider
 import org.apache.log4j.LogManager
@@ -88,6 +88,30 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
 
 
     bn.close()
+
+  }
+
+  it should "copy correctly" in{
+    val sp = new CSVSampleProvider("src/test/resources/ageGenderIncome.csv", ";")
+
+    val gp = new GraphMLGraphProvider("src/test/resources/ageGenderIncome.gml")
+
+    val bn = new BayesianNetwork(gp)
+
+    val slmp = new SimpleLinearModelProvider()
+    val gbmp = new GaussianBaseModelProvider()
+    val scmp = new SimpleCategoricalModelProvider()
+
+    bn.setModelType("Age", gbmp)
+    bn.setModelType("Gender", scmp)
+    bn.setModelType("Income", slmp)
+
+    val bn2 = bn.copy()
+
+    bn.setModelType("Age", new SimpleLinearModelProvider())
+
+    bn2.getModelType("Age") shouldBe a [GaussianBaseModelProvider]
+    bn.getModelType("Age") shouldBe a [SimpleLinearModelProvider]
 
   }
 }

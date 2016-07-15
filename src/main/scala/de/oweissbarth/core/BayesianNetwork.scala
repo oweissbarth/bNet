@@ -21,7 +21,7 @@ import org.json4s.jackson.JsonMethods._
   */
 class BayesianNetwork(graph: DirectedAcyclicGraph){
 
-  private val sparkConf = new SparkConf()
+  private val sparkConf = new SparkConf().setAppName("bayesian").setMaster("local")
 
   private val sc = SparkContext.getOrCreate(sparkConf)
 

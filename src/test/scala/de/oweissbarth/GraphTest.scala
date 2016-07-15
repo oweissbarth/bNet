@@ -32,13 +32,10 @@ class GraphTest extends FlatSpec with BeforeAndAfterAll with Matchers{
 
     
     " A Directed acyclic graph" should "construct from a list of labels and edges" in {
-      val graph = new DirectedAcyclicGraph()
-      graph should not be null
-
       val labels = List("1", "2", "3", "4")
       val edges = List((0,1), (0,3), (2,3), (3,1))
 
-      graph.fromLabelsAndEdges(labels, edges)
+      val graph = DirectedAcyclicGraph.fromLabelsAndEdges(labels, edges)
 
       graph.nodes should have size 4
 
@@ -62,10 +59,6 @@ class GraphTest extends FlatSpec with BeforeAndAfterAll with Matchers{
 
       val graph = pro.getGraph()
 
-      val labels = List("1", "2", "3", "4")
-      val edges = List((0,1), (0,3), (2,3), (3,1))
-
-      graph.fromLabelsAndEdges(labels, edges)
 
       graph.nodes should have size 4
 
@@ -89,14 +82,9 @@ class GraphTest extends FlatSpec with BeforeAndAfterAll with Matchers{
       val graphValid = proValid.getGraph()
       graphValid should not be null
 
-      graphValid.isValid() should be (true)
-
       val proInvalid = new GraphMLGraphProvider("src/test/resources/example_graph_cyclic.gml")
 
-      val graphInvalid = proInvalid.getGraph()
-      graphInvalid should not be null
-
-      graphInvalid.isValid() should not be (true)
+      an[DirectedAcyclicGraph.GraphIsCyclicException] should be thrownBy ( {val graphInvalid = proInvalid.getGraph()})
     }
 
 }

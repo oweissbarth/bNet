@@ -39,9 +39,10 @@ class Node(val label: String, var parents: Array[Node]){
     * @param parents the parent nodes
     * @param model the model for this node
     */
-  def this(label: String, parents: Array[Node], model: Model) = {
+  def this(label: String, parents: Array[Node], model: Model, modelProvider: ModelProvider) = {
     this(label, parents)
     this.model = Option(model)
+    this.modelProvider = Option(modelProvider)
   }
 
   /** returns a human readable representation of the node
