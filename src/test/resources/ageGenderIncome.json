@@ -1,0 +1,5 @@
+{"BayesianNetwork": [
+  {"label": "Age", "parents": [], "model": {"type":"GaussianBaseModel","expectation":48.24466666666667,"variance":417.22829041583293}},
+  {"label": "Gender", "parents": [], "model": {"type":"SimpleCategoricalModel","distribution":{"F":0.39266666666666666,"M":0.6073333333333333}}},
+  {"label": "Income", "parents": ["Age", "Gender"], "model": {"type":"SimpleLinearModel","parameters":{"F":{"_1":[127.5823660643216],"_2":-1667.5917887833812},"M":{"_1":[141.87166045963318],"_2":-1857.9846069332846}}}}
+]}

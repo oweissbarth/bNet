@@ -1,11 +1,12 @@
 package de.oweissbarth.model
 
-import de.oweissbarth.core.BayesianNetwork
-import org.apache.spark.sql.DataFrame
-import org.apache.log4j.LogManager
-import org.json4s.{DefaultFormats, ShortTypeHints}
+import org.apache.spark.sql.{DataFrame, SQLContext}
+import org.apache.spark.SparkContext
+import org.json4s.DefaultFormats
 import org.json4s.jackson.JsonMethods._
-import org.json4s.jackson.Serialization._
+
+import org.apache.spark.sql.functions.{randn, udf}
+
 
 
 /** hold the parameters of the simple 2 dimensional gaussian model
@@ -15,7 +16,13 @@ import org.json4s.jackson.Serialization._
   * @param variance is the variance of the gaussian
   */
 case class GaussianBaseModel(expectation: Double, variance: Double) extends Model{
-  override def model(dependencies: DataFrame) = {
+  override def model(dependencies: DataFrame, count: Long): DataFrame = {
+    val sc = SparkContext.getOrCreate()
+    val sqlc = new SQLContext(sc)
+
+    val modelApply = udf((d: Double) => d*Math.sqrt(variance)+expectation)
+
+    dependencies.withColumn("age", modelApply(randn()))
 
   }
 

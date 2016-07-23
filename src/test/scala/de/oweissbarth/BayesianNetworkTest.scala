@@ -113,5 +113,8 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
     bn2.getModelType("Age") shouldBe a [GaussianBaseModelProvider]
     bn.getModelType("Age") shouldBe a [SimpleLinearModelProvider]
 
+    bn.close()
+    bn2.close()
+
   }
 }

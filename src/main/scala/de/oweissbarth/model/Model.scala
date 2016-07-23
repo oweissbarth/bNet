@@ -13,7 +13,7 @@ trait Model{
     *
     * @param dependencies the variables of the mdel
     */
-  def model(dependencies:  DataFrame)
+  def model(dependencies:  DataFrame, count: Long): DataFrame
 
   /** returns a json representation of the model
     *

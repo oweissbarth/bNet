@@ -19,7 +19,7 @@ import org.json4s.jackson.JsonMethods._
   *
   * @param graph the graph for the network
   */
-class BayesianNetwork(graph: DirectedAcyclicGraph){
+class BayesianNetwork(private[oweissbarth] val graph: DirectedAcyclicGraph){
 
   private val sparkConf = new SparkConf().setAppName("bayesian").setMaster("local")
 
