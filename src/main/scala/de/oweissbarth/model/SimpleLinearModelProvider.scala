@@ -23,9 +23,10 @@ class SimpleLinearModelProvider extends ModelProvider {
     val logger = Logger.getLogger(s"SimpleLinearModelProvider for ${subDataSet.columns(0)}")
 
 
-    var parameters : Map[String, (Vector, Double)] = new HashMap()
+    var parameters : Map[Set[String], SimpleLinearModelParameterSet] = new HashMap()
 
-    val categoricalParents = parents.filter(n => n.modelProvider.getOrElse(false).isInstanceOf[CategoricalModelProvider]).map(n=>n.label)
+    val categoricalParents = parents.filter(_.isCategorical).map(_.label)
+    val intervalParents = parents.filterNot(_.isCategorical).map(_.label)
 
     logger.info(s"Found ${categoricalParents.length} categorical parents.")
 
@@ -34,8 +35,8 @@ class SimpleLinearModelProvider extends ModelProvider {
       val categoricalColumns = categoricalParents.map(label=> subDataSet.col(label))
       val parentColumns = parents.map(node => subDataSet.col(node.label))
       val allColumns = (subDataSet.col(subDataSet.columns(0)))+:parentColumns
-      val categoryCombinations = subDataSet.select(categoricalColumns:_*).distinct().map(r=>r.toSeq.map(e=>e.toString)).collect()
-      logger.info(s"Fitting models for ${categoryCombinations.length} category combinations.")
+      val categoryCombinations = subDataSet.select(categoricalColumns:_*).distinct().map(r=>r.toSeq.map(e=>e.toString).toSet) // NOTE use of RDD here
+      logger.info(s"Fitting models for ${categoryCombinations.count()} category combinations.")
       categoryCombinations.foreach(c=>{
         val conditional = categoricalParents.map(a=>a.toString()).zip(c).map(c=>c._1+"=\'"+c._2+"\'").reduceLeft((c1, c2)=>c1+"AND"+c2)
         val selectedData = subDataSet.where(conditional).select(allColumns.diff(categoricalColumns):_*)
@@ -46,8 +47,8 @@ class SimpleLinearModelProvider extends ModelProvider {
           } ))))
         val lr = new LinearRegression()
         val result = lr.fit(sqlc.createDataFrame(data))
-        val newParam = (c.reduce((a,b)=>a+","+b) ->(result.coefficients, result.intercept))
-        parameters = parameters + newParam
+        val newParam = (c -> SimpleLinearModelParameterSet((intervalParents, result.coefficients.toArray).zipped.toMap, result.intercept))
+        parameters += newParam
       })
 
     }else{
@@ -59,10 +60,10 @@ class SimpleLinearModelProvider extends ModelProvider {
         } ))))
       val lr = new LinearRegression()
       val result = lr.fit(sqlc.createDataFrame(data))
-      val newParam = ("" ->(result.coefficients, result.intercept))
-      parameters = parameters + newParam
+      val newParam = (Set[String]() -> SimpleLinearModelParameterSet((intervalParents, result.coefficients.toArray).zipped.toMap, result.intercept))
+      parameters += newParam
     }
 
-    new SimpleLinearModel(parameters.mapValues(e=>(e._1.toArray, e._2)))
+    new SimpleLinearModel(parameters)
   }
 }

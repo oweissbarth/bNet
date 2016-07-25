@@ -71,6 +71,21 @@ class Node(val label: String, var parents: Array[Node]){
     }
 	}
 
+  /** returns true if the node is categorical
+    *
+    * @note also returns false if model type could not be determined
+    *
+    * @return true if has categorical model or modelprovider
+    */
+  def isCategorical() = {
+    if(model.isDefined)
+      model.get.isInstanceOf[CategoricalModel]
+    else if(modelProvider.isDefined)
+      modelProvider.get.isInstanceOf[CategoricalModelProvider]
+    else
+      false
+  }
+
   /** returns a json representation of the node
     *
     * @return  a json represenation of the node

@@ -111,7 +111,7 @@ class BayesianNetwork(private[oweissbarth] val graph: DirectedAcyclicGraph){
 }
 
 object BayesianNetwork{
-  var modelTypes: List[Class[_<:Model]] = List(classOf[SimpleLinearModel], classOf[SimpleCategoricalModel], classOf[GaussianBaseModel])
+  var modelTypes: List[Class[_]] = List(classOf[SimpleLinearModel], classOf[SimpleCategoricalModel], classOf[GaussianBaseModel], classOf[SimpleLinearModelParameterSet])
 
   def fromJson(json: String): BayesianNetwork = {
     val ast = parse(json)

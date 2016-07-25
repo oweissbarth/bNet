@@ -1,4 +1,5 @@
 package de.oweissbarth.model
+import de.oweissbarth.graph.Node
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.sql.functions.{rand, udf}
@@ -11,8 +12,8 @@ import org.json4s._
   * @constructor  creates a simple catgorical model
   * @param distribution the propability of each category
   */
-case class SimpleCategoricalModel(distribution: Map[String, Double]) extends Model {
-  override def model(dependencies: DataFrame, count : Long): DataFrame = {
+case class SimpleCategoricalModel(distribution: Map[String, Double]) extends CategoricalModel {
+  override def model(dependencies: DataFrame, node: Node, count : Long): DataFrame = {
 
     val sc = SparkContext.getOrCreate()
     val sqlc = new SQLContext(sc)
@@ -32,7 +33,7 @@ case class SimpleCategoricalModel(distribution: Map[String, Double]) extends Mod
 
 
 
-    dependencies.withColumn("gender", modelApply(rand()))
+    dependencies.withColumn(node.label, modelApply(rand()))
 
   }
 
