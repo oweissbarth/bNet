@@ -2,7 +2,7 @@ name := "bayesian"
 
 version := "1.0"
 
-scalaVersion := "2.10.6"
+scalaVersion := "2.11.8"
 
 //libraryDependencies ~= { _.map(_.exclude("org.slf4j", "slf4j-jdk14")) }
 
@@ -14,12 +14,12 @@ libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.6" % "test"
 
 
 /*XML */
-//libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.2" //NOTE this is included in scala 2.10. Remmeber to readd when going to spark 2.0
+libraryDependencies += "org.scala-lang.modules" %% "scala-xml" % "1.0.2" //NOTE this is included in scala 2.10. Remmeber to readd when going to spark 2.0
 
 /*Spark*/
-libraryDependencies += "org.apache.spark" %% "spark-core" % "1.6.1"
-libraryDependencies += "org.apache.spark" %% "spark-sql" % "1.6.1"
-libraryDependencies += "org.apache.spark" %% "spark-mllib" % "1.6.1"
+libraryDependencies += "org.apache.spark" %% "spark-core" % "2.0.0"
+libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.0.0"
+libraryDependencies += "org.apache.spark" %% "spark-mllib" % "2.0.0"
 libraryDependencies += "com.databricks" %% "spark-csv" % "1.4.0"
 
 
@@ -38,6 +38,8 @@ javaOptions in run ++= Seq(
 outputStrategy := Some(StdoutOutput)
 
 parallelExecution in test := false
+
+scalacOptions := Seq("-unchecked", "-deprecation")
 
 
     
