@@ -36,15 +36,15 @@ class PersistTest extends FlatSpec with BeforeAndAfterAll with Matchers{
     }
 
     "A SimpleLinearModel " should "serialize to json correctly" in{
-      val lm = new SimpleLinearModel(Map(Set("M")->(SimpleLinearModelParameterSet(Map(("Age"->0.3), ("Gender"->0.1)), 1.2))))
-      lm.asJson().replaceAll(wsReg, "") should be ("""{"type":"SimpleLinearModel","parameters":{"M":{"_1":[0.3,0.1],"_2":1.2}}}""")
+      val lm = new SimpleLinearModel(Map("M"->(SimpleLinearModelParameterSet(Map(("Age"->0.3), ("Gender"->0.1)), 1.2))))
+      lm.asJson().replaceAll(wsReg, "") should be ("""{"type":"SimpleLinearModel","parameters":{"M":{"type":"SimpleLinearModelParameterSet","slope":{"Age":0.3,"Gender":0.1},"intercept":1.2}}}""")
     }
 
     it should "deserialize from json correctly" in {
-      val lm = SimpleLinearModel.fromJson("""{"type":"SimpleLinearModel","parameters":{"M":{"_1":[0.3,0.1],"_2":1.2}}}""")
+      val lm = SimpleLinearModel.fromJson("""{"type":"SimpleLinearModel","parameters":{"M":{"type":"SimpleLinearModelParameterSet","slope":{"Age":0.3,"Gender":0.1},"intercept":1.2}}}""")
 
-      lm.parameters(Set("M")).slope should be (Map(("Age"->0.3), ("Gender"->0.1)))
-      lm.parameters(Set("M")).intercept should be (1.2)
+      lm.parameters("M").slope should be (Map(("Age"->0.3), ("Gender"->0.1)))
+      lm.parameters("M").intercept should be (1.2)
     }
 
    "A Node " should "serialize to json correctly" in {

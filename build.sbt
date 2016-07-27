@@ -27,9 +27,6 @@ libraryDependencies += "com.databricks" %% "spark-csv" % "1.4.0"
 libraryDependencies += "com.github.fommil.netlib" % "all" % "1.1.2"
 
 
-
-
-
 /*Logging*/
 //libraryDependencies += "ch.qos.logback" %  "logback-classic" % "1.1.7"
 //libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging" % "3.4.0"

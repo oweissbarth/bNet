@@ -28,7 +28,7 @@ class SimpleSynthesizerTest extends  FlatSpec with Matchers with BeforeAndAfterA
 
     selectionAge.getDouble(0) should be (48.24 +- 1.5)
 
-    selectionAge.getDouble(1) should be (417.23 +- 15.0)
+    selectionAge.getDouble(1) should be (417.23 +- 20.0)
 
     val selectionGender = result.groupBy("Gender").count()
 
@@ -37,8 +37,6 @@ class SimpleSynthesizerTest extends  FlatSpec with Matchers with BeforeAndAfterA
     selectionGender.where("Gender = 'M'").first().getLong(1)/count.toDouble should be (0.607 +- 0.05)
 
     bn.close()
-
-    result.show(20)
 
 
   }
