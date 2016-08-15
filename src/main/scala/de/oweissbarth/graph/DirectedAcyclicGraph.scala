@@ -120,7 +120,7 @@ object DirectedAcyclicGraph{
     *
     * models are preserved.
     *
-    * @param a list of unlinked nodes
+    * @param list a list of unlinked nodes
     * @return an option containing a sorted list of unlinked nodes
     */
   private def topologicSort(list: List[UnlinkedNode]):Option[List[UnlinkedNode]] = {

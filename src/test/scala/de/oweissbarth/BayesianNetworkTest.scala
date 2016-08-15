@@ -91,6 +91,13 @@ class BayesianNetworkTest extends FlatSpec with Matchers {
 
   }
 
+  it should "skip nodes with no modelprovider when fitting" in {
+    val sp = new CSVSampleProvider("src/test/resources/ageGenderIncome.csv", ";")
+    val gp = new GraphMLGraphProvider("src/test/resources/ageGenderIncome.gml")
+    val bn = new BayesianNetwork(gp)
+    bn.fit(sp)
+  }
+
   it should "copy correctly" in{
     val sp = new CSVSampleProvider("src/test/resources/ageGenderIncome.csv", ";")
 

@@ -43,7 +43,7 @@ case class SimpleCategoricalModel(distribution: Map[String, Double]) extends Cat
     * @return a human readable representation of the model
     */
   override def toString(): String = {
-    "SimpleCategoricalModel: <" + distribution.foreach(p => p.toString) + ">"
+    "SimpleCategoricalModel: <" + distribution.map(p => p._1+": "+p._2).reduce(_+", "+_) + ">"
   }
 
 }

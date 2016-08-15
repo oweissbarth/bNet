@@ -117,7 +117,6 @@ class PersistTest extends FlatSpec with BeforeAndAfterAll with Matchers{
           s"""{"type": "ConstantModel", "value": $value}"""
         }
       }
-
       BayesianNetwork.registerModelType(classOf[ConstantModel])
 
       BayesianNetwork.modelTypes should contain (classOf[ConstantModel])

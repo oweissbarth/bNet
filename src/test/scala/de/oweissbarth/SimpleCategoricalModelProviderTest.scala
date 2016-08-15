@@ -1,6 +1,6 @@
 package de.oweissbarth
 
-import de.oweissbarth.model.SimpleCategoricalModelProvider
+import de.oweissbarth.model.{SimpleCategoricalModel, SimpleCategoricalModelProvider}
 import de.oweissbarth.sample.CSVSampleProvider
 import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.sql.{Row, SQLContext}
@@ -25,6 +25,11 @@ class SimpleCategoricalModelProviderTest extends  FlatSpec with Matchers with Be
   override def afterAll() = {
     val sc = SparkContext.getOrCreate()
     sc.stop()
+  }
+
+  "A SimpleCategoricalModel" should "serialize to String" in {
+    val m = SimpleCategoricalModel(Map("M"->0.4, "F"->0.6))
+    m.toString should be ("SimpleCategoricalModel: <M: 0.4, F: 0.6>")
   }
 
   "A SimpleCategoricalModelProvider" should "initialize without errors" in {

@@ -50,7 +50,7 @@ class Node(val label: String, var parents: Array[Node]){
     * @return a human readable representation of the node
     */
 	override def toString() = {
-		"Node: "+label+" [parents: " + parents.map(_.toString()) + "]"
+		"Node: "+label+" [parents: " + parents.map(_.label).foldLeft("")( _+","+_) + "]"
 	}
 
   /** creates a model based on the specified modelProvider and sample data

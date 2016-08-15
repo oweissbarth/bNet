@@ -1,9 +1,13 @@
 package de.oweissbarth
 
+import de.oweissbarth.graph.DirectedAcyclicGraph.GraphIsCyclicException
 import de.oweissbarth.graph._
-import org.apache.spark.sql.SQLContext
+import de.oweissbarth.model._
+import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
 import org.scalatest._
+
+import scala.collection.immutable.HashMap
 
 
 class GraphTest extends FlatSpec with BeforeAndAfterAll with Matchers{
@@ -30,6 +34,29 @@ class GraphTest extends FlatSpec with BeforeAndAfterAll with Matchers{
       new Node("Test").label should be ("Test")
     }
 
+    it should "serialize to String" in {
+      new Node("Test").toString() should be ("Node: Test [parents: ]")
+    }
+
+  it should "return the correct model type" in {
+    val n = new Node("test")
+
+    n.isCategorical() should be (false)
+
+    n.modelProvider = Option(new SimpleCategoricalModelProvider())
+    n.isCategorical() should be (true)
+
+    n.modelProvider = Option(new SimpleLinearModelProvider())
+    n.isCategorical() should be (false)
+
+    n.modelProvider = None
+    n.model = Option(SimpleCategoricalModel(Map("A"->0.5)))
+    n.isCategorical() should be (true)
+
+    n.model = Option(GaussianBaseModel(0.5, 3.8))
+    n.isCategorical() should be (false)
+  }
+
     
     " A Directed acyclic graph" should "construct from a list of labels and edges" in {
       val labels = List("1", "2", "3", "4")
@@ -51,6 +78,18 @@ class GraphTest extends FlatSpec with BeforeAndAfterAll with Matchers{
       graph.nodes("4").parents(0).label should be ("1")
       graph.nodes("4").parents(1).label should be ("3")
 
+    }
+
+    it should "return a node by a given label" in {
+      val node = new Node("Test")
+      val graph = new DirectedAcyclicGraph(HashMap("Test"->node))
+
+      graph.getNodeByLabel("Test") should be (node)
+    }
+
+    it should "serialize to String" in {
+      val graph = DirectedAcyclicGraph.fromLabelsAndEdges(List(), List())
+      graph.toString should be ("DirectedAcyclicGraph: Map()")
     }
     
     "A GraphMLGraphProvider" should "read a file and construct a correct dag" in {
@@ -74,7 +113,14 @@ class GraphTest extends FlatSpec with BeforeAndAfterAll with Matchers{
       graph.nodes("4").parents(0).label should be ("1")
       graph.nodes("4").parents(1).label should be ("3")
     }
-    
+
+
+    "A GraphIsCyclicException" should "be instantiatable" in {
+      val e = GraphIsCyclicException()
+      e should not be (null)
+      e shouldBe an [Exception]
+
+  }
 
     "the isValid method " should " return true for a acyclic graph" in {
       val proValid = new GraphMLGraphProvider("src/test/resources/example_graph.gml")
