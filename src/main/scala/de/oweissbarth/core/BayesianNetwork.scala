@@ -3,10 +3,9 @@ package de.oweissbarth.core
 import de.oweissbarth.graph._
 import de.oweissbarth.sample._
 import de.oweissbarth.model._
-import org.apache.log4j.LogManager
+import org.apache.log4j.{Level, LogManager}
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SQLContext
-
 import org.json4s.jackson.JsonMethods._
 
 /** The full bayesian network
@@ -29,6 +28,8 @@ class BayesianNetwork(private[oweissbarth] val graph: DirectedAcyclicGraph){
 
 
   private val logger = LogManager.getRootLogger
+
+  logger.setLevel(Level.WARN)
 
 
   /*logger.info("trying to match columns and nodes...")

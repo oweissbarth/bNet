@@ -1,8 +1,8 @@
 name := "bNet"
 
-version := "1.0"
+organization :="de.oweissbarth"
 
-organization:="de.oweissbarth"
+version := "1.0"
 
 scalaVersion := "2.10.6"
 
@@ -41,5 +41,3 @@ outputStrategy := Some(StdoutOutput)
 
 parallelExecution in test := false
 
-
-    
