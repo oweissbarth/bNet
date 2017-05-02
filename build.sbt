@@ -1,6 +1,8 @@
-name := "bayesian"
+name := "bNet"
 
 version := "1.0"
+
+organization:="de.oweissbarth"
 
 scalaVersion := "2.10.6"
 

@@ -21,7 +21,12 @@ case class SimpleLinearModel(parameters: Map[String, SimpleLinearModelParameterS
 
     val modelApply = udf((r: Row)=>{
       val categories = categoricalParents.map(l=> r.getString(nameToIndex(l)))//r.getValuesMap[String](categoricalParents).values.toList
-      val parameters = this.parameters(categories.sorted.reduce(_+","+_)) // TODO this is a workaround as json4s does not support Set[String] as Map key
+      val paramKey = if(categoricalParents.nonEmpty){
+          categoricalParents.zip(categories).sortBy(_._1).map(_._2).reduce(_+","+_)
+      }else{
+          ""
+        }
+      val parameters = this.parameters(paramKey)
       val result = intervalParents.map(l=>(l, r.getDouble(nameToIndex(l)))).map{case (label, value)=> parameters.slope(label)*value}
       result.sum +parameters.intercept
     })
