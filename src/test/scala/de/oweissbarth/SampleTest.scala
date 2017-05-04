@@ -56,6 +56,20 @@ class SampleTest extends FlatSpec with BeforeAndAfterAll with Matchers{
 
   }
 
+  it should " trim whitespaces from column label" in{
+    val sc = SparkContext.getOrCreate()
+    implicit val sqlc = SQLContext.getOrCreate(sc)
+
+    val prov = new CSVSampleProvider("src/test/resources/ageGenderIncomeWithWhitespaces.csv", ";")
+
+    val labels = prov.getSample().records.columns
+
+    labels(0) shouldBe "Age"
+    labels(1) shouldBe "Gender"
+    labels(2) shouldBe "Income"
+
+  }
+
 
 
 

@@ -35,10 +35,12 @@ class SimpleLinearModelProvider extends ModelProvider {
       val categoricalColumns = categoricalParents.map(label=> subDataSet.col(label))
       val parentColumns = parents.map(node => subDataSet.col(node.label))
       val allColumns = (subDataSet.col(subDataSet.columns(0)))+:parentColumns
+      val order = categoricalParents.zipWithIndex.sortWith(_._1 < _._1).map(_._2)
       val categoryCombinations = subDataSet.select(categoricalColumns:_*).distinct().map(r=>r.toSeq.map(e=>e.toString)).collect() // NOTE use of RDD here
       logger.info(s"Fitting models for ${categoryCombinations.length} category combinations.")
       categoryCombinations.foreach(c=>{
-        val conditional = categoricalParents.map(a=>a.toString()).zip(c).map(c=>c._1+"=\'"+c._2+"\'").reduceLeft((c1, c2)=>c1+"AND"+c2)
+        val categoryNodePairs = categoricalParents.map(a=>a.toString()).zip(c)
+        val conditional =  categoryNodePairs.map(c=>c._1+"=\'"+c._2+"\'").reduceLeft((c1, c2)=>c1+" AND "+c2)
         val selectedData = subDataSet.where(conditional).select(allColumns.diff(categoricalColumns):_*)
         val data = selectedData.map(r=> LabeledPoint(r.getDouble(0), Vectors.dense(r.toSeq.toArray.drop(1).map(
           _ match{
@@ -47,7 +49,8 @@ class SimpleLinearModelProvider extends ModelProvider {
           } ))))
         val lr = new LinearRegression()
         val result = lr.fit(sqlc.createDataFrame(data))
-        val newParam = (c.sorted.reduce(_+","+_) -> SimpleLinearModelParameterSet((intervalParents, result.coefficients.toArray).zipped.toMap, result.intercept))
+        val paramKey = categoryNodePairs.sortBy(_._1).map(_._2).reduce(_+","+_)
+        val newParam = (paramKey -> SimpleLinearModelParameterSet((intervalParents, result.coefficients.toArray).zipped.toMap, result.intercept))
         parameters += newParam
       })
 

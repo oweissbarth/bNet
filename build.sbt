@@ -1,4 +1,6 @@
-name := "bayesian"
+name := "bNet"
+
+organization :="de.oweissbarth"
 
 version := "1.0"
 
@@ -39,5 +41,3 @@ outputStrategy := Some(StdoutOutput)
 
 parallelExecution in test := false
 
-
-    
