@@ -25,7 +25,7 @@ class CSVSampleProvider(filepath :String, delimiter: String ) extends SampleProv
     val sqlc = SQLContext.getOrCreate(sc)
 
     val src = Source.fromFile(filepath).getLines()
-    val labels = src.next().split(delimiter)
+    val labels = src.next().split(delimiter).map(_.trim)
     var first = src.next().split(delimiter)
 
     val schema = labels zip first map({case (l :String, e:String )=> if(Try(e.toDouble).isSuccess){
