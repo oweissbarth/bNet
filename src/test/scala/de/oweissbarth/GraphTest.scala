@@ -38,24 +38,24 @@ class GraphTest extends FlatSpec with BeforeAndAfterAll with Matchers{
       new Node("Test").toString() should be ("Node: Test [parents: ]")
     }
 
-  it should "return the correct model type" in {
-    val n = new Node("test")
+    it should "return the correct model type" in {
+      val n = new Node("test")
 
-    n.isCategorical() should be (false)
+      n.isCategorical() should be (false)
 
-    n.modelProvider = Option(new SimpleCategoricalModelProvider())
-    n.isCategorical() should be (true)
+      n.modelProvider = Option(new SimpleCategoricalModelProvider())
+      n.isCategorical() should be (true)
 
-    n.modelProvider = Option(new SimpleLinearModelProvider())
-    n.isCategorical() should be (false)
+      n.modelProvider = Option(new SimpleLinearModelProvider())
+      n.isCategorical() should be (false)
 
-    n.modelProvider = None
-    n.model = Option(SimpleCategoricalModel(Map("A"->0.5)))
-    n.isCategorical() should be (true)
+      n.modelProvider = None
+      n.model = Option(SimpleCategoricalModel(Map("A"->0.5)))
+      n.isCategorical() should be (true)
 
-    n.model = Option(GaussianBaseModel(0.5, 3.8))
-    n.isCategorical() should be (false)
-  }
+      n.model = Option(GaussianBaseModel(0.5, 3.8))
+      n.isCategorical() should be (false)
+    }
 
     
     " A Directed acyclic graph" should "construct from a list of labels and edges" in {

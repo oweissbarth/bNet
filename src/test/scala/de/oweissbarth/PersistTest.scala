@@ -49,11 +49,11 @@ class PersistTest extends FlatSpec with BeforeAndAfterAll with Matchers{
 
    "A Node " should "serialize to json correctly" in {
      val cm = new SimpleCategoricalModel(Map("M"->0.4, "F"->0.6))
-     val n = new Node("Income", Array(new Node("Age"), new Node("Gender")))
+     val n = new Node("Income", Array(new Node("Age"), new Node("Gender"), new Node("Education")))
      n.model = Some(cm)
-     n.asJson().replaceAll(wsReg, "") should be ("""{"label":"Income","parents":["Age","Gender"],"model":{"type":"SimpleCategoricalModel","distribution":{"M":0.4,"F":0.6}}}""")
+     n.asJson().replaceAll(wsReg, "") should be ("""{"label":"Income","parents":["Age","Gender","Education"],"model":{"type":"SimpleCategoricalModel","distribution":{"M":0.4,"F":0.6}}}""")
      n.model = None
-     n.asJson().replaceAll(wsReg, "") should be ("""{"label":"Income","parents":["Age","Gender"],"model":null}""")
+     n.asJson().replaceAll(wsReg, "") should be ("""{"label":"Income","parents":["Age","Gender","Education"],"model":null}""")
 
    }
 
