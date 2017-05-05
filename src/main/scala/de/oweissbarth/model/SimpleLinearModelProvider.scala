@@ -3,6 +3,7 @@ package de.oweissbarth.model
 import de.oweissbarth.graph.Node
 import org.apache.log4j.Logger
 import org.apache.spark.SparkContext
+import org.apache.spark.ml.feature.VectorAssembler
 import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.ml.regression.LinearRegression
 import org.apache.spark.mllib.linalg.{Vector, Vectors}
@@ -42,13 +43,9 @@ class SimpleLinearModelProvider extends ModelProvider {
         val categoryNodePairs = categoricalParents.map(a=>a.toString()).zip(c)
         val conditional =  categoryNodePairs.map(c=>c._1+"=\'"+c._2+"\'").reduceLeft((c1, c2)=>c1+" AND "+c2)
         val selectedData = subDataSet.where(conditional).select(allColumns.diff(categoricalColumns):_*)
-        val data = selectedData.map(r=> LabeledPoint(r.getDouble(0), Vectors.dense(r.toSeq.toArray.drop(1).map(
-          _ match{
-            case d: Double =>d
-            case default =>/* logger.error(s"Value $default is not of type double. ");*/ Double.NaN
-          } ))))
+        val assembler = new VectorAssembler().setInputCols(selectedData.columns.drop(1)).setOutputCol("features")
         val lr = new LinearRegression()
-        val result = lr.fit(sqlc.createDataFrame(data))
+        val result = lr.fit(assembler.transform(selectedData).withColumn("label", selectedData.col(selectedData.columns(0))))
         val paramKey = categoryNodePairs.sortBy(_._1).map(_._2).reduce(_+","+_)
         val newParam = (paramKey -> SimpleLinearModelParameterSet((intervalParents, result.coefficients.toArray).zipped.toMap, result.intercept))
         parameters += newParam
@@ -56,13 +53,9 @@ class SimpleLinearModelProvider extends ModelProvider {
 
     }else{
       logger.info("Fitting single model for interval parents.")
-      val data = subDataSet.map(r=> LabeledPoint(r.getDouble(0), Vectors.dense(r.toSeq.drop(1).toArray.map(
-        _ match{
-          case d: Double =>d
-          case default => Double.NaN
-        } ))))
+      val assembler = new VectorAssembler().setInputCols(subDataSet.columns.drop(1)).setOutputCol("features")
       val lr = new LinearRegression()
-      val result = lr.fit(sqlc.createDataFrame(data))
+      val result = lr.fit(assembler.transform(subDataSet).withColumn("label", subDataSet.col(subDataSet.columns(0))))
       val newParam = ("" -> SimpleLinearModelParameterSet((intervalParents, result.coefficients.toArray).zipped.toMap, result.intercept))
       parameters += newParam
     }
