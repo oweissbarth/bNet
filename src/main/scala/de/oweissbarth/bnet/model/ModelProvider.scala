@@ -14,18 +14,23 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.sample
+package de.oweissbarth.bnet.model
 
+import de.oweissbarth.bnet.graph.Node
 import org.apache.spark.sql.DataFrame
 
-// TODO switch to DataSet once ready +  supported by spark-csv
-/** holds a DataFrame to model against
+/** supplies a model to a bayesian network
   *
-  * @param records the data sample
   */
-class Sample(val records: DataFrame) {
-  override def toString() = {
-    "Sample: "
-  }
-  
+abstract class ModelProvider{
+  /** computes a model based on sample data and the parent nodes
+    *
+    * @note The first column of d is always the column to model
+    *
+    * @param d the sample data
+    * @param parents the nodes on which the computed model might depend
+    * @return the calculated model
+    */
+  def getModel(d: DataFrame, parents: Array[Node]): Model
+
 }

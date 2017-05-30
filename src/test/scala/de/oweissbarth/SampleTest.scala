@@ -16,7 +16,7 @@
 
 package de.oweissbarth
 
-import de.oweissbarth.sample._
+import de.oweissbarth.bnet.sample._
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.{SparkConf, SparkContext}
 

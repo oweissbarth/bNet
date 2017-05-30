@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.graph
+package de.oweissbarth.bnet.graph
 
-import de.oweissbarth.core.BayesianNetwork
-import de.oweissbarth.graph.DirectedAcyclicGraph.{UnlinkedNode, buildNodes}
-import de.oweissbarth.model.{Model, ModelProvider}
+import de.oweissbarth.bnet.core.BayesianNetwork
+import de.oweissbarth.bnet.graph.DirectedAcyclicGraph.{UnlinkedNode, buildNodes}
+import de.oweissbarth.bnet.model.{Model, ModelProvider}
 import org.json4s.{DefaultFormats, ShortTypeHints}
 import org.json4s.JsonAST.JValue
 

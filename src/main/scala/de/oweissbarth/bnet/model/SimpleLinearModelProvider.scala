@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.model
+package de.oweissbarth.bnet.model
 
-import de.oweissbarth.graph.Node
+import de.oweissbarth.bnet.graph.Node
 import org.apache.log4j.Logger
 import org.apache.spark.SparkContext
 import org.apache.spark.ml.feature.VectorAssembler

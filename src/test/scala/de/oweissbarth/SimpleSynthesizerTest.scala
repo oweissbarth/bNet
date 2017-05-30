@@ -16,8 +16,8 @@
 
 package de.oweissbarth
 
-import de.oweissbarth.core.BayesianNetwork
-import de.oweissbarth.synthesis.SimpleSynthesizer
+import de.oweissbarth.bnet.core.BayesianNetwork
+import de.oweissbarth.bnet.synthesis.SimpleSynthesizer
 import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 import org.apache.spark.sql.functions.{avg, variance}
 

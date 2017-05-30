@@ -16,9 +16,9 @@
 
 package de.oweissbarth
 
-import de.oweissbarth.graph.DirectedAcyclicGraph.GraphIsCyclicException
-import de.oweissbarth.graph._
-import de.oweissbarth.model._
+import de.oweissbarth.bnet.graph.DirectedAcyclicGraph.GraphIsCyclicException
+import de.oweissbarth.bnet.graph._
+import de.oweissbarth.bnet.model._
 import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}
 import org.scalatest._

@@ -16,8 +16,8 @@
 
 package de.oweissbarth
 
-import de.oweissbarth.model.{GaussianBaseModelProvider, SimpleLinearModelProvider}
-import de.oweissbarth.sample.CSVSampleProvider
+import de.oweissbarth.bnet.model.{GaussianBaseModelProvider, SimpleLinearModelProvider}
+import de.oweissbarth.bnet.sample.CSVSampleProvider
 import org.apache.spark.mllib.linalg.Vectors
 import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.sql.SQLContext

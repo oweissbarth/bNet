@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.sample
+package de.oweissbarth.bnet.sample
 
 import org.apache.spark.sql.{Row, SQLContext}
 import org.apache.spark.SparkContext

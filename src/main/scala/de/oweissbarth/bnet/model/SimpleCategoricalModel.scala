@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.model
-import de.oweissbarth.graph.Node
+package de.oweissbarth.bnet.model
+import de.oweissbarth.bnet.graph.Node
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.sql.functions.{rand, udf}

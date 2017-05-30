@@ -17,10 +17,10 @@
 package de.oweissbarth
 
 
-import de.oweissbarth.core.BayesianNetwork
-import de.oweissbarth.model.{GaussianBaseModel, GaussianBaseModelProvider, SimpleCategoricalModelProvider, SimpleLinearModelProvider}
-import de.oweissbarth.graph.{GraphMLGraphProvider, Node}
-import de.oweissbarth.sample.CSVSampleProvider
+import de.oweissbarth.bnet.core.BayesianNetwork
+import de.oweissbarth.bnet.model.{GaussianBaseModel, GaussianBaseModelProvider, SimpleCategoricalModelProvider, SimpleLinearModelProvider}
+import de.oweissbarth.bnet.graph.{GraphMLGraphProvider, Node}
+import de.oweissbarth.bnet.sample.CSVSampleProvider
 import org.apache.log4j.LogManager
 import org.scalatest._
 

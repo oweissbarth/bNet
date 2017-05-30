@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.graph
+package de.oweissbarth.bnet.graph
 
 /** supplies the bayesian network with a graph
   *

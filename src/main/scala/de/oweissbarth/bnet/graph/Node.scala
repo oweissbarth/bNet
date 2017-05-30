@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.graph
+package de.oweissbarth.bnet.graph
 
 import org.apache.log4j.LogManager
-import de.oweissbarth.core.BayesianNetwork
-import de.oweissbarth.model._
+import de.oweissbarth.bnet.core.BayesianNetwork
+import de.oweissbarth.bnet.model._
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.{DataFrame, SQLContext}
 

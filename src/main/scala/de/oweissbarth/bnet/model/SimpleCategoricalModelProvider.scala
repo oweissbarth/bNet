@@ -14,11 +14,20 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.model
+package de.oweissbarth.bnet.model
+import de.oweissbarth.bnet.graph.Node
+import org.apache.spark.sql.DataFrame
 
-/** supplies a model to a bayesian network. Any modelProvider for interval data should extends this
+
+/** supplies a SimpleCategoricalModel
   *
   */
-abstract class IntervalModelProvider extends ModelProvider {
+class SimpleCategoricalModelProvider extends CategoricalModelProvider{
+  override def getModel(d: DataFrame, parents: Array[Node]): SimpleCategoricalModel = {
 
+    val total: Double = d.count()
+
+    val distribution = d.groupBy(d.columns(0)).count().collect().map(r => (r.get(0).toString -> r.getLong(1)/total)).toMap
+    new SimpleCategoricalModel(distribution)
+  }
 }

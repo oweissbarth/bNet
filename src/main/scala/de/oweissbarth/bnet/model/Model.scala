@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.model
+package de.oweissbarth.bnet.model
 
-import de.oweissbarth.core.BayesianNetwork
-import de.oweissbarth.graph.Node
+import de.oweissbarth.bnet.core.BayesianNetwork
+import de.oweissbarth.bnet.graph.Node
 import org.apache.spark.sql.DataFrame
 import org.json4s.jackson.Serialization._
 import org.json4s.{DefaultFormats, ShortTypeHints}

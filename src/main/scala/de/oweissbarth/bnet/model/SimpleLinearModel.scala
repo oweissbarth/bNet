@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.model
-import de.oweissbarth.graph.Node
+package de.oweissbarth.bnet.model
+import de.oweissbarth.bnet.graph.Node
 import org.apache.spark.sql.{DataFrame, Row}
 import org.json4s._
 import org.json4s.jackson.JsonMethods._

@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.model
+package de.oweissbarth.bnet.sample
 
-/** Any modelProvider for modeling categorical data should extend this.
-  *
-  */
-abstract class CategoricalModelProvider extends ModelProvider {
+abstract class DataField() {
+  
 }

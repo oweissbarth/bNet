@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.core
+package de.oweissbarth.bnet.core
 
-import de.oweissbarth.graph._
-import de.oweissbarth.sample._
-import de.oweissbarth.model._
+import de.oweissbarth.bnet.graph._
+import de.oweissbarth.bnet.sample._
+import de.oweissbarth.bnet.model._
 import org.apache.log4j.{Level, LogManager}
 import org.apache.spark.{SparkConf, SparkContext}
 import org.apache.spark.sql.SQLContext

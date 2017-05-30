@@ -14,20 +14,10 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.model
-import de.oweissbarth.graph.Node
-import org.apache.spark.sql.DataFrame
+package de.oweissbarth.bnet.model
 
-
-/** supplies a SimpleCategoricalModel
+/** Any modelProvider for modeling categorical data should extend this.
   *
   */
-class SimpleCategoricalModelProvider extends CategoricalModelProvider{
-  override def getModel(d: DataFrame, parents: Array[Node]): SimpleCategoricalModel = {
-
-    val total: Double = d.count()
-
-    val distribution = d.groupBy(d.columns(0)).count().collect().map(r => (r.get(0).toString -> r.getLong(1)/total)).toMap
-    new SimpleCategoricalModel(distribution)
-  }
+abstract class CategoricalModelProvider extends ModelProvider {
 }

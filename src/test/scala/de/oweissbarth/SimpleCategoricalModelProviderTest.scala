@@ -16,8 +16,8 @@
 
 package de.oweissbarth
 
-import de.oweissbarth.model.{SimpleCategoricalModel, SimpleCategoricalModelProvider}
-import de.oweissbarth.sample.CSVSampleProvider
+import de.oweissbarth.bnet.model.{SimpleCategoricalModel, SimpleCategoricalModelProvider}
+import de.oweissbarth.bnet.sample.CSVSampleProvider
 import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.sql.{Row, SQLContext}
 import org.apache.spark.{SparkConf, SparkContext}

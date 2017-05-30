@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.synthesis
+package de.oweissbarth.bnet.synthesis
 
-import de.oweissbarth.core.BayesianNetwork
-import de.oweissbarth.graph.Node
+import de.oweissbarth.bnet.core.BayesianNetwork
+import de.oweissbarth.bnet.graph.Node
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.{DataFrame, SQLContext}
 

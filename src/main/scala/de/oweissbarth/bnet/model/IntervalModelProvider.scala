@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-package de.oweissbarth.model
+package de.oweissbarth.bnet.model
 
-import de.oweissbarth.graph.Node
-import org.apache.spark.sql.DataFrame
-
-/** supplies a model to a bayesian network
+/** supplies a model to a bayesian network. Any modelProvider for interval data should extends this
   *
   */
-abstract class ModelProvider{
-  /** computes a model based on sample data and the parent nodes
-    *
-    * @note The first column of d is always the column to model
-    *
-    * @param d the sample data
-    * @param parents the nodes on which the computed model might depend
-    * @return the calculated model
-    */
-  def getModel(d: DataFrame, parents: Array[Node]): Model
+abstract class IntervalModelProvider extends ModelProvider {
 
 }
